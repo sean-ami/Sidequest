@@ -1,5 +1,5 @@
 import type { Maiden } from "../data/maidens";
-import { Placeholder } from "./ParallaxScene";
+import { Placeholder, PortraitComposite } from "./ParallaxScene";
 
 const PRODUCTS = [
   { kind: "mat", name: "Desk mat", spec: "32 × 16 in · stitched edge" },
@@ -14,9 +14,15 @@ export function ProductMocks({ maiden }: { maiden: Maiden }) {
   return (
     <div className="products">
       {PRODUCTS.map((p) => (
-        <article key={p.kind} className={`product product--${p.kind}`}>
+        <article key={p.kind} className={`product product--${p.kind} ${art?.portrait ? "product--portrait" : ""}`}>
           <div className="product__img">
-            {art ? <img src={art.sceneSm} alt="" loading="lazy" style={{ objectPosition: pos }} /> : <Placeholder maiden={maiden} />}
+            {!art ? (
+              <Placeholder maiden={maiden} />
+            ) : art.portrait && p.kind === "mat" ? (
+              <PortraitComposite maiden={maiden} />
+            ) : (
+              <img src={art.sceneSm} alt="" loading="lazy" style={{ objectPosition: art.portrait ? "50% 15%" : pos }} />
+            )}
           </div>
           <div className="product__meta">
             <strong>{maiden.name} · {p.name}</strong>

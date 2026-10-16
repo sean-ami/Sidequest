@@ -43,10 +43,12 @@ export function ParallaxScene({ maiden, guides, className }: Props) {
   } as CSSProperties;
 
   return (
-    <div className={`scene scene--${maiden.mood} ${className ?? ""}`} style={style}>
+    <div className={`scene scene--${maiden.mood} ${maiden.art?.portrait ? "scene--portrait" : ""} ${className ?? ""}`} style={style}>
       <div className="scene__art" ref={artRef}>
         {maiden.art?.bubble ? (
           <BubblePop maiden={maiden} />
+        ) : maiden.art?.portrait ? (
+          <PortraitComposite maiden={maiden} />
         ) : maiden.art ? (
           <img
             src={maiden.art.scene}
@@ -120,6 +122,24 @@ function BubblePop({ maiden }: { maiden: Maiden }) {
         style={{ left: `${focus.x * 100}%`, top: `${focus.y * 100}%` }}
         onClick={trigger}
         aria-label="Pop Vega's bubble"
+      />
+    </div>
+  );
+}
+
+/** Stages a 2:3 portrait on a 16:9 (or any) frame: the figure over a blurred wash of the same art. */
+export function PortraitComposite({ maiden }: { maiden: Maiden }) {
+  const art = maiden.art!;
+  return (
+    <div className="portrait">
+      <img className="portrait__bg" src={art.sceneSm} alt="" draggable={false} />
+      <img
+        className="portrait__fig"
+        src={art.scene}
+        srcSet={`${art.sceneSm} 480w, ${art.scene} 832w`}
+        sizes="(max-width: 900px) 100vw, 640px"
+        alt={`${maiden.name}, host of ${maiden.station}`}
+        draggable={false}
       />
     </div>
   );

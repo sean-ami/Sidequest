@@ -615,6 +615,58 @@ section {
   background: radial-gradient(circle at var(--fx) 62%, rgba(255, 220, 150, 0.35), transparent 40%);
 }
 
+/* portrait staging: 2:3 figure over a blurred wash of the same art */
+.scene {
+  container-type: size;
+}
+.scene--full.scene--portrait .scene__art {
+  inset: 0;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+.portrait {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+}
+.portrait__bg {
+  position: absolute;
+  inset: -10%;
+  width: 120% !important;
+  height: 120% !important;
+  object-fit: cover;
+  filter: blur(40px) saturate(1.6) brightness(0.72);
+}
+.portrait__fig {
+  position: absolute;
+  bottom: 0;
+  right: 8%;
+  height: 100% !important;
+  width: auto !important;
+  aspect-ratio: 832 / 1216;
+  object-fit: cover;
+  --feather: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  --fade: linear-gradient(to bottom, #000 78%, transparent);
+  -webkit-mask-image: var(--feather), var(--fade);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--feather), var(--fade);
+  mask-composite: intersect;
+}
+/* tall frames (phones): the figure fills the width, face at the top */
+@container (aspect-ratio < 1.1) {
+  .portrait__fig {
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: auto;
+    width: 100% !important;
+    height: auto !important;
+    --feather: linear-gradient(#000, #000);
+  }
+}
+
 /* Vega's bubble pop */
 .bubble {
   position: relative;
@@ -1065,6 +1117,10 @@ section {
   border-radius: 22px;
   outline: 3px solid #0a0f24;
   outline-offset: -3px;
+}
+.product--poster.product--portrait .product__img {
+  aspect-ratio: 2 / 3;
+  max-width: 70%;
 }
 .product--poster .product__img {
   aspect-ratio: 3 / 2;

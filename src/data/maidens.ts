@@ -3,6 +3,8 @@
 // ART DROP-IN: put files in public/art/<slug>/ and list them under `art` below.
 //   scene.webp / scene-sm.webp  16:9 station still (1920 / 960 wide)
 //   card.webp  / card-sm.webp   optional alternate render used on the holo card
+// Portrait-only art (2:3 character renders) uses `p("<slug>")`: the card shows it as-is and
+// station scenes stage the figure over a blurred wash of the same art until a 16:9 scene exists.
 // Anything without art renders a procedural placeholder in the Maiden's colours.
 //
 // Accent colours for Maidens without art yet are first guesses; replace with the bible values.
@@ -18,6 +20,8 @@ export type Art = {
   cardSm?: string;
   /** Vega's bubble-pop sequence: idle (bubble) → pop → after (no bubble). */
   bubble?: { idle: string; pop: string; after: string; idleSm: string; popSm: string; afterSm: string };
+  /** Art is a 2:3 character portrait rather than a 16:9 scene. */
+  portrait?: boolean;
   /** Where the scene's focal point sits (0–1), used to anchor glows and the bubble hotspot. */
   focus?: { x: number; y: number };
 };
@@ -45,6 +49,15 @@ const a = (slug: string, extra: Partial<Art> = {}): Art => ({
   scene: asset(`/art/${slug}/scene.webp`),
   sceneSm: asset(`/art/${slug}/scene-sm.webp`),
   ...extra,
+});
+
+const p = (slug: string): Art => ({
+  scene: asset(`/art/${slug}/card.webp`),
+  sceneSm: asset(`/art/${slug}/card-sm.webp`),
+  card: asset(`/art/${slug}/card.webp`),
+  cardSm: asset(`/art/${slug}/card-sm.webp`),
+  portrait: true,
+  focus: { x: 0.72, y: 0.3 },
 });
 
 export const MAIDENS: Maiden[] = [
@@ -121,10 +134,11 @@ export const MAIDENS: Maiden[] = [
     key: { root: 50, mode: "pentatonic" },
     mood: "moon",
     use: "Meditation · Calm",
-    color: "#9DB8FF",
-    color2: "#FFB7D5",
+    color: "#B77CFF",
+    color2: "#DCE6FF",
     freq: "96.9",
     priority: 1,
+    art: p("tsukiyo"),
   },
   {
     slug: "aurelia",
@@ -151,10 +165,11 @@ export const MAIDENS: Maiden[] = [
     key: { root: 46, mode: "dorian" },
     mood: "smoke",
     use: "Reading · Unwind",
-    color: "#E0566E",
-    color2: "#F2B66D",
+    color: "#E3263A",
+    color2: "#F5B82E",
     freq: "101.3",
     priority: 2,
+    art: p("mara"),
   },
   {
     slug: "mimi",
@@ -166,10 +181,11 @@ export const MAIDENS: Maiden[] = [
     key: { root: 53, mode: "major" },
     mood: "city",
     use: "Chill · Cleaning",
-    color: "#F06CFF",
-    color2: "#7AD7FF",
+    color: "#FF8FC8",
+    color2: "#F0A58C",
     freq: "103.9",
     priority: 2,
+    art: p("mimi"),
   },
   {
     slug: "jackie",
@@ -181,10 +197,11 @@ export const MAIDENS: Maiden[] = [
     key: { root: 45, mode: "minor" },
     mood: "dust",
     use: "Driving · Focus",
-    color: "#E8A15C",
-    color2: "#7FC8C2",
+    color: "#2ED3C6",
+    color2: "#D9A15A",
     freq: "105.1",
     priority: 2,
+    art: p("jackie"),
   },
   {
     slug: "tilt",
@@ -196,10 +213,11 @@ export const MAIDENS: Maiden[] = [
     key: { root: 48, mode: "pentatonic" },
     mood: "pixel",
     use: "Gaming · Coding",
-    color: "#7CFF6B",
-    color2: "#FF5FD2",
+    color: "#B6FF2E",
+    color2: "#FF3EDB",
     freq: "107.7",
     priority: 2,
+    art: p("tilt"),
   },
 ];
 

@@ -28,7 +28,7 @@ export function HoloCard({ maiden, index }: { maiden: Maiden; index: number }) {
 
   const img = maiden.art?.card ?? maiden.art?.scene;
   const imgSm = maiden.art?.cardSm ?? maiden.art?.sceneSm;
-  const focusX = maiden.art?.card ? 0.7 : (maiden.art?.focus?.x ?? 0.5);
+  const objectPosition = maiden.art?.portrait ? "50% 15%" : `${(maiden.art?.card ? 0.7 : (maiden.art?.focus?.x ?? 0.5)) * 100}% 30%`;
 
   return (
     <div
@@ -42,7 +42,7 @@ export function HoloCard({ maiden, index }: { maiden: Maiden; index: number }) {
         <div className="holo__face holo__front">
           <div className="holo__art">
             {img ? (
-              <img src={imgSm} srcSet={`${imgSm} 960w, ${img} 1920w`} sizes="320px" alt="" style={{ objectPosition: `${focusX * 100}% 30%` }} loading="lazy" />
+              <img src={imgSm} srcSet={`${imgSm} 960w, ${img} 1920w`} sizes="320px" alt="" style={{ objectPosition }} loading="lazy" />
             ) : (
               <Placeholder maiden={maiden} />
             )}

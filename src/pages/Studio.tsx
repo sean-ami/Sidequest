@@ -19,13 +19,13 @@ export function Studio() {
       <div className="page__head">
         <span className="eyebrow">Studio</span>
         <h1>Print crop check</h1>
-        <p>Keep the figure, her face and every signature element inside the dashed safe area. Solid frames show the 2:1 desk mat and 3:2 poster crops of the 16:9 master.</p>
+        <p>Keep the figure, her face and every signature element inside the dashed safe area. Solid frames show the 2:1 desk mat and 3:2 poster crops of the 16:9 master. Maidens with only a portrait render are left out until their scene exists.</p>
         <label className="toggle">
           <input type="checkbox" checked={guides} onChange={(e) => setGuides(e.target.checked)} /> Show guides
         </label>
       </div>
       <div className="studio">
-        {MAIDENS.filter((m) => m.art).map((m) => (
+        {MAIDENS.filter((m) => m.art && !m.art.portrait).map((m) => (
           <figure key={m.slug}>
             <ParallaxScene maiden={m} guides={guides} className="scene--framed" />
             <figcaption>{m.name} · {m.station}</figcaption>
