@@ -150,10 +150,11 @@ export const MAIDENS: Maiden[] = [
     key: { root: 48, mode: "major" },
     mood: "stars",
     use: "Sleep · Insomnia relief",
-    color: "#FFD27A",
-    color2: "#B8A6FF",
+    color: "#FFC84A",
+    color2: "#8A6BFF",
     freq: "99.5",
     priority: 1,
+    art: p("aurelia"),
   },
   {
     slug: "mara",
