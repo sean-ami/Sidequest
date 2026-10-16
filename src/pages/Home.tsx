@@ -6,6 +6,7 @@ import { StationDial } from "../components/StationDial";
 import { MAIDENS } from "../data/maidens";
 import { useStation } from "../lib/station";
 import { useTitle } from "../lib/useTitle";
+import { go } from "../lib/paths";
 
 const ForgeCanvas = lazy(() => import("../components/ForgeCanvas"));
 
@@ -78,7 +79,7 @@ export function Home() {
           <span className="pillar__num mono">01</span>
           <h3>Lo-fi stations</h3>
           <p>Three-hour mixes with characters who actually move: Briar's lightning, Vega's bubble, Nova's dash. Original music, no claims.</p>
-          <a href="/go/youtube" className="link">Side Quest Lo-Fi ↗</a>
+          <a href={go("youtube")} className="link">Side Quest Lo-Fi ↗</a>
         </article>
         <article>
           <span className="pillar__num mono">02</span>

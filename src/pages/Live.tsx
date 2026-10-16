@@ -1,4 +1,5 @@
 import { useTitle } from "../lib/useTitle";
+import { go } from "../lib/paths";
 
 export function Live() {
   useTitle("Live");
@@ -12,7 +13,7 @@ export function Live() {
       <div className="live-card">
         <span className="mono">Next show</span>
         <strong>To be announced</strong>
-        <a className="btn btn--primary" href="/go/whatnot">Follow on Whatnot ↗</a>
+        <a className="btn btn--primary" href={go("whatnot")}>Follow on Whatnot ↗</a>
       </div>
       <p className="disclosure">
         Some links on this page are referral links. If you sign up through them we may receive a credit. That's paid promotion, and we want you to know.

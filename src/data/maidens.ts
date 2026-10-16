@@ -7,6 +7,8 @@
 //
 // Accent colours for Maidens without art yet are first guesses; replace with the bible values.
 
+import { asset } from "../lib/paths";
+
 export type Mood = "rain" | "neon" | "sun" | "moon" | "stars" | "smoke" | "city" | "dust" | "pixel";
 
 export type Art = {
@@ -40,8 +42,8 @@ export type Maiden = {
 };
 
 const a = (slug: string, extra: Partial<Art> = {}): Art => ({
-  scene: `/art/${slug}/scene.webp`,
-  sceneSm: `/art/${slug}/scene-sm.webp`,
+  scene: asset(`/art/${slug}/scene.webp`),
+  sceneSm: asset(`/art/${slug}/scene-sm.webp`),
   ...extra,
 });
 
@@ -79,16 +81,16 @@ export const MAIDENS: Maiden[] = [
     priority: 1,
     signature: "Bubble Pop",
     art: a("vega", {
-      card: "/art/vega/card.webp",
-      cardSm: "/art/vega/card-sm.webp",
+      card: asset("/art/vega/card.webp"),
+      cardSm: asset("/art/vega/card-sm.webp"),
       focus: { x: 0.66, y: 0.29 },
       bubble: {
-        idle: "/art/vega/bubble.webp",
-        pop: "/art/vega/pop.webp",
-        after: "/art/vega/scene.webp",
-        idleSm: "/art/vega/bubble-sm.webp",
-        popSm: "/art/vega/pop-sm.webp",
-        afterSm: "/art/vega/scene-sm.webp",
+        idle: asset("/art/vega/bubble.webp"),
+        pop: asset("/art/vega/pop.webp"),
+        after: asset("/art/vega/scene.webp"),
+        idleSm: asset("/art/vega/bubble-sm.webp"),
+        popSm: asset("/art/vega/pop-sm.webp"),
+        afterSm: asset("/art/vega/scene-sm.webp"),
       },
     }),
   },

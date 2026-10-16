@@ -1,5 +1,6 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, createMemoryRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "./components/Layout";
+import { isPreview } from "./lib/paths";
 import { StationProvider } from "./lib/station";
 import { Home } from "./pages/Home";
 import { Live } from "./pages/Live";
@@ -9,7 +10,10 @@ import { Shop } from "./pages/Shop";
 import { Station } from "./pages/Station";
 import { Studio } from "./pages/Studio";
 
-const router = createBrowserRouter([
+// The preview build is hosted at a single URL, so it routes in memory.
+const createRouter = isPreview ? createMemoryRouter : createBrowserRouter;
+
+const router = createRouter([
   {
     element: <Layout />,
     children: [

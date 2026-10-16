@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useStation } from "../lib/station";
+import { go } from "../lib/paths";
 
 export function Lockup({ size = "sm" }: { size?: "sm" | "lg" }) {
   return (
@@ -41,7 +42,7 @@ export function Layout() {
           <NavLink to="/maidens">Maidens</NavLink>
           <NavLink to="/shop">Shop</NavLink>
           <NavLink to="/live">Live</NavLink>
-          <a href="/go/youtube">Lo-Fi ↗</a>
+          <a href={go("youtube")}>Lo-Fi ↗</a>
         </nav>
         <button className={`nav__radio ${audioOn ? "is-on" : ""}`} onClick={toggleAudio} aria-pressed={audioOn} title="Toggle station ambience">
           <span className="eq" aria-hidden="true"><i /><i /><i /></span>
@@ -65,10 +66,10 @@ export function Layout() {
           </div>
           <div>
             <h4>Follow</h4>
-            <a href="/go/youtube">YouTube</a>
-            <a href="/go/instagram">Instagram</a>
-            <a href="/go/tiktok">TikTok</a>
-            <a href="/go/bluesky">Bluesky</a>
+            <a href={go("youtube")}>YouTube</a>
+            <a href={go("instagram")}>Instagram</a>
+            <a href={go("tiktok")}>TikTok</a>
+            <a href={go("bluesky")}>Bluesky</a>
           </div>
           <div>
             <h4>Contact</h4>

@@ -6,6 +6,7 @@ import { bySlug, MAIDENS } from "../data/maidens";
 import { useStation } from "../lib/station";
 import { useTitle } from "../lib/useTitle";
 import { NotFound } from "./NotFound";
+import { go } from "../lib/paths";
 
 export function Station() {
   const { slug } = useParams();
@@ -35,7 +36,7 @@ export function Station() {
             <button className={`btn btn--primary ${audioOn ? "is-on" : ""}`} onClick={toggleAudio}>
               {audioOn ? "◼ Stop the radio" : "▶ Play station ambience"}
             </button>
-            <a href="/go/youtube" className="btn">Full 3-hour mixes ↗</a>
+            <a href={go("youtube")} className="btn">Full 3-hour mixes ↗</a>
           </div>
         </div>
       </section>
