@@ -1,0 +1,8 @@
+# Outbound links used in video descriptions. Change a destination here once
+# instead of editing fifty published descriptions. 302 so changes take effect immediately.
+/go/youtube    https://www.youtube.com/@sidequestlofi            302
+/go/whatnot    https://www.whatnot.com/user/sidequestsupplyco    302
+/go/instagram  https://www.instagram.com/sidequestforge          302
+/go/tiktok     https://www.tiktok.com/@sidequestforge            302
+/go/bluesky    https://bsky.app/profile/sidequestforge.com       302
+/go/discord    /live                                             302
