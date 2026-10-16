@@ -1,22 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useStation } from "../lib/station";
+import { Lockup } from "./GemMark";
 import { go } from "../lib/paths";
-
-export function Lockup({ size = "sm" }: { size?: "sm" | "lg" }) {
-  return (
-    <span className={`lockup lockup--${size}`} aria-label="Side Quest Forge">
-      <svg viewBox="0 0 40 40" className="lockup__mark" aria-hidden="true">
-        <path d="M20 4 33 20 20 36 7 20Z" fill="none" stroke="#3DD6C8" strokeWidth="3" strokeLinejoin="round" />
-        <path d="M31 3l1.4 3.6L36 8l-3.6 1.4L31 13l-1.4-3.6L26 8l3.6-1.4z" fill="#FF3E8A" />
-      </svg>
-      <span className="lockup__words">
-        <span>SIDEQUEST</span>
-        <span>FORGE</span>
-      </span>
-    </span>
-  );
-}
 
 export function Layout() {
   const { current, audioOn, toggleAudio } = useStation();
@@ -54,7 +40,7 @@ export function Layout() {
       </main>
       <footer className="footer">
         <div className="footer__brand">
-          <Lockup />
+          <Lockup size="md" />
           <p>Original characters · original music. The Forge is where the Maidens were made.</p>
         </div>
         <nav className="footer__cols" aria-label="Footer">

@@ -2,6 +2,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useStation } from "../lib/station";
+import { GEM } from "./GemMark";
 
 const vert = /* glsl */ `
   varying vec2 vUv;
@@ -39,7 +40,7 @@ const frag = /* glsl */ `
     vec2 q = vec2(fbm(p * 1.6 + t), fbm(p * 1.6 - t + 4.0));
     float n = fbm(p * 2.2 + q * 1.8 + vec2(0.0, -t * 2.0));
 
-    vec3 navy = vec3(0.027, 0.047, 0.13);
+    vec3 navy = vec3(0.043, 0.055, 0.086);
     vec3 col = navy;
     col = mix(col, uA * 0.55, smoothstep(0.45, 0.95, n) * 0.85);
     col = mix(col, uB * 0.5, smoothstep(0.55, 1.0, q.x) * 0.55);
@@ -96,55 +97,88 @@ function Backdrop() {
   );
 }
 
+// Brilliant cut matching the lockup's profile: table 0.6× the girdle, crown 0.31, pavilion 0.97 (of girdle width).
+function gemGeometry(sides = 8) {
+  const crown = 0.44, pavilion = 1.36, table = 0.6;
+  const shades = [GEM.light, GEM.accent, GEM.mid, GEM.dark].map((c) => new THREE.Color(c));
+  const [light, accent, mid, dark] = shades;
+  const pos: number[] = [];
+  const col: number[] = [];
+  const ring = (r: number, y: number, i: number, off = 0) => {
+    const a = ((i + off) / sides) * Math.PI * 2;
+    return [Math.cos(a) * r, y, Math.sin(a) * r];
+  };
+  const tri = (a: number[], b: number[], c: number[], color: THREE.Color) => {
+    pos.push(...a, ...b, ...c);
+    for (let k = 0; k < 3; k++) col.push(color.r, color.g, color.b);
+  };
+  for (let i = 0; i < sides; i++) {
+    const t0 = ring(table, crown, i), t1 = ring(table, crown, i + 1);
+    const g0 = ring(1, 0, i), g1 = ring(1, 0, i + 1);
+    tri([0, crown, 0], t1, t0, accent);
+    const c = i % 2 ? light : accent;
+    tri(t0, t1, g1, c);
+    tri(t0, g1, g0, c);
+    tri(g0, g1, [0, -pavilion, 0], i % 2 ? dark : mid);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("color", new THREE.Float32BufferAttribute(col, 3));
+  g.computeVertexNormals();
+  g.translate(0, 0.42, 0);
+  return g;
+}
+
+function sparkleGeometry(r: number) {
+  // the lockup sparkle: four points joined by curves pinched toward the centre
+  const s = new THREE.Shape();
+  const k = r * 0.09;
+  s.moveTo(0, r);
+  s.quadraticCurveTo(k, k, r, 0);
+  s.quadraticCurveTo(k, -k, 0, -r);
+  s.quadraticCurveTo(-k, -k, -r, 0);
+  s.quadraticCurveTo(-k, k, 0, r);
+  return new THREE.ShapeGeometry(s, 12);
+}
+
 function Diamond() {
-  const group = useRef<THREE.Group>(null);
+  const gem = useRef<THREE.Group>(null);
   const sparkle = useRef<THREE.Mesh>(null);
+  const small = useRef<THREE.Mesh>(null);
   const { viewport } = useThree();
   const wide = viewport.aspect > 1.1;
-  const geo = useMemo(() => {
-    const g = new THREE.OctahedronGeometry(1, 0);
-    g.scale(0.78, 1.1, 0.78);
-    return g;
-  }, []);
-  const edges = useMemo(() => new THREE.EdgesGeometry(geo), [geo]);
-  const star = useMemo(() => {
-    const s = new THREE.Shape();
-    const pts = 4;
-    for (let i = 0; i < pts * 2; i++) {
-      const r = i % 2 === 0 ? 0.22 : 0.05;
-      const a = (i / (pts * 2)) * Math.PI * 2;
-      const fn = i === 0 ? "moveTo" : "lineTo";
-      s[fn](Math.sin(a) * r, Math.cos(a) * r);
-    }
-    return new THREE.ShapeGeometry(s);
-  }, []);
+  const geo = useMemo(() => gemGeometry(), []);
+  const edges = useMemo(() => new THREE.EdgesGeometry(geo, 1), [geo]);
+  const star = useMemo(() => sparkleGeometry(0.3), []);
+  const starSmall = useMemo(() => sparkleGeometry(0.11), []);
 
   useFrame((state, dt) => {
-    const g = group.current;
+    const g = gem.current;
     if (!g) return;
-    g.rotation.y += dt * 0.35;
-    g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, -state.pointer.y * 0.35, 0.05);
-    g.rotation.z = THREE.MathUtils.lerp(g.rotation.z, -state.pointer.x * 0.2, 0.05);
-    g.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.08;
-    if (sparkle.current) {
-      const s = 0.85 + Math.sin(state.clock.elapsedTime * 2.4) * 0.25;
-      sparkle.current.scale.setScalar(s);
-      sparkle.current.rotation.z += dt * 0.6;
-    }
+    const t = state.clock.elapsedTime;
+    g.rotation.y += dt * 0.4;
+    g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, 0.28 - state.pointer.y * 0.25, 0.05);
+    g.rotation.z = THREE.MathUtils.lerp(g.rotation.z, -state.pointer.x * 0.15, 0.05);
+    g.position.y = Math.sin(t * 0.8) * 0.07;
+    if (sparkle.current) sparkle.current.scale.setScalar(0.85 + Math.sin(t * 2.2) * 0.2);
+    if (small.current) small.current.scale.setScalar(0.8 + Math.sin(t * 3.1 + 1.5) * 0.3);
   });
 
   return (
-    <group position={wide ? [viewport.width * 0.24, 0.05, 0] : [0, viewport.height * 0.2, 0]} scale={wide ? 1 : 0.55}>
-      <group ref={group}>
+    <group position={wide ? [viewport.width * 0.24, 0.05, 0] : [0, viewport.height * 0.2, 0]} scale={wide ? 0.8 : 0.55}>
+      <group ref={gem}>
         <mesh geometry={geo}>
-          <meshStandardMaterial color="#14204F" emissive="#3DD6C8" emissiveIntensity={0.12} metalness={0.7} roughness={0.2} flatShading transparent opacity={0.8} />
+          <meshStandardMaterial vertexColors flatShading metalness={0.15} roughness={0.32} emissive={GEM.accent} emissiveIntensity={0.12} />
         </mesh>
-        <lineSegments geometry={edges}>
-          <lineBasicMaterial color="#3DD6C8" />
+        <lineSegments geometry={edges} scale={1.004}>
+          <lineBasicMaterial color="#ffffff" />
         </lineSegments>
       </group>
-      <mesh ref={sparkle} geometry={star} position={[0.7, 0.95, 0.4]}>
-        <meshBasicMaterial color="#FF3E8A" />
+      <mesh ref={sparkle} geometry={star} position={[0.86, 0.98, 0.6]}>
+        <meshBasicMaterial color="#ffffff" />
+      </mesh>
+      <mesh ref={small} geometry={starSmall} position={[1.18, 0.4, 0.6]}>
+        <meshBasicMaterial color={GEM.teal} />
       </mesh>
     </group>
   );
@@ -153,7 +187,8 @@ function Diamond() {
 export default function ForgeCanvas() {
   return (
     <Canvas className="forge-canvas" dpr={[1, 1.75]} camera={{ position: [0, 0, 5], fov: 40 }} gl={{ antialias: true, powerPreference: "high-performance" }}>
-      <ambientLight intensity={0.4} />
+      <ambientLight intensity={0.7} />
+      <directionalLight position={[2, 4, 5]} intensity={1.6} />
       <pointLight position={[3, 3, 4]} intensity={40} color="#FF3E8A" />
       <pointLight position={[-3, -2, 3]} intensity={30} color="#3DD6C8" />
       <Backdrop />
