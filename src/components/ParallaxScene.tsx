@@ -150,7 +150,7 @@ export function Placeholder({ maiden }: { maiden: Maiden }) {
     <div className="placeholder" role="img" aria-label={`${maiden.name}: art coming soon`}>
       <div className="placeholder__sky" />
       <span className="placeholder__glyph">{maiden.name}</span>
-      <span className="placeholder__tag">art in the forge</span>
+      <span className="placeholder__tag">art in progress</span>
     </div>
   );
 }

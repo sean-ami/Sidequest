@@ -1,4 +1,4 @@
-/* Side Quest Forge — navy ground, white, teal, pink. --accent follows the tuned station. */
+/* Side Quest Maidens — navy ground, white, teal, pink. --accent follows the tuned station. */
 :root {
   --navy: #0b0e16;
   --ink: #10141f;
@@ -172,10 +172,10 @@ p {
   letter-spacing: -0.042em;
   line-height: 0.9;
 }
-.lockup__forge {
+.lockup__sub {
   font-weight: 500;
   font-size: max(0.29em, 8.5px);
-  letter-spacing: 1.25em;
+  letter-spacing: 1em; /* MAIDENS is two letters longer than the sheet's FORGE; tracking eased to keep the width */
   color: var(--teal);
   line-height: 1;
 }
@@ -192,7 +192,7 @@ p {
   --ground: #eef3f8;
   color: #0b0e16;
 }
-.lockup--light .lockup__forge {
+.lockup--light .lockup__sub {
   color: #0b0e16;
 }
 

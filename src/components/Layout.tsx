@@ -41,7 +41,7 @@ export function Layout() {
       <footer className="footer">
         <div className="footer__brand">
           <Lockup size="md" />
-          <p>Original characters · original music. The Forge is where the Maidens were made.</p>
+          <p>Nine original characters, each hosting her own lo-fi station. Original music, original art.</p>
         </div>
         <nav className="footer__cols" aria-label="Footer">
           <div>
@@ -59,11 +59,11 @@ export function Layout() {
           </div>
           <div>
             <h4>Contact</h4>
-            <a href="mailto:hello@sidequestforge.com">hello@sidequestforge.com</a>
+            <a href="mailto:hello@sidequestmaidens.com">hello@sidequestmaidens.com</a>
           </div>
         </nav>
         <p className="footer__fine">
-          © {new Date().getFullYear()} Side Quest Forge. Animation is AI-assisted; characters and music are our own.
+          © {new Date().getFullYear()} Side Quest Maidens. Animation is AI-assisted; characters and music are our own.
         </p>
       </footer>
     </>

@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "sidequestforge",
+  "name": "sidequestmaidens",
   "main": "worker/index.ts",
   "compatibility_date": "2026-09-01",
   "assets": {
@@ -15,6 +15,6 @@
   "routes": [
     { "pattern": "sidequestmaidens.com", "custom_domain": true },
     { "pattern": "www.sidequestmaidens.com", "custom_domain": true }
-    // add sidequestforge.com here too to serve the same site on both domains
+    // add other domains (e.g. sidequestforge.com) here to serve the same site on them too
   ]
 }

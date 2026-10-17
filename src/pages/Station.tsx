@@ -45,7 +45,7 @@ export function Station() {
         <dl className="stats">
           <div><dt>Tempo</dt><dd>{maiden.bpm[0]}–{maiden.bpm[1]} BPM</dd></div>
           <div><dt>Made for</dt><dd>{maiden.use}</dd></div>
-          <div><dt>Signature</dt><dd>{maiden.signature ?? "In the forge"}</dd></div>
+          <div><dt>Signature</dt><dd>{maiden.signature ?? "Coming soon"}</dd></div>
         </dl>
       </section>
 
@@ -55,7 +55,7 @@ export function Station() {
           <h2>Take the station home</h2>
         </div>
         <ProductMocks maiden={maiden} />
-        <p className="note">The shop opens with the new art. <Link to="/live">Follow the Forge</Link> to hear first.</p>
+        <p className="note">The shop opens with the new art. <Link to="/live">Follow along</Link> to hear first.</p>
       </section>
 
       <nav className="station-nav" aria-label="Other stations">

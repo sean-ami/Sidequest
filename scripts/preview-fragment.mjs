@@ -11,5 +11,5 @@ const keep = head
   .filter((l) => !/<meta charset|<meta name="viewport"/.test(l))
   .join("\n")
   .replace(/ crossorigin(?=[ >])/g, "");
-writeFileSync(file, `${keep.trim().replace(/<title>.*?<\/title>/, "<title>Side Quest Forge</title>")}\n<style>:root{color-scheme:dark}body{background:#0b0e16}</style>\n${body.trim()}\n`);
+writeFileSync(file, `${keep.trim().replace(/<title>.*?<\/title>/, "<title>Side Quest Maidens</title>")}\n<style>:root{color-scheme:dark}body{background:#0b0e16}</style>\n${body.trim()}\n`);
 console.log("wrote fragment", file);

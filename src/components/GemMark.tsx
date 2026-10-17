@@ -1,4 +1,4 @@
-// The Side Quest Forge gem, from the round 2 gem lockup (140×140 artboard).
+// The Side Quest Maidens gem, from the round 2 gem lockup (140×140 artboard).
 // Facet shades are the accent mixed toward white (light) or black (mid, dark).
 
 export const GEM = {
@@ -82,14 +82,14 @@ export function GemMark({ variant = "dark", ground = "#10141F", size = 40, class
   );
 }
 
-/** Gem + two-line wordmark. Proportions follow the lockup: FORGE is 0.29× the SIDEQUEST size. */
+/** Gem + two-line wordmark. Proportions follow the lockup: the second line is 0.29× the SIDEQUEST size. */
 export function Lockup({ size = "sm", variant = "dark" }: { size?: "sm" | "md" | "lg"; variant?: Variant }) {
   return (
-    <span className={`lockup lockup--${size} lockup--${variant}`} aria-label="Side Quest Forge" role="img">
+    <span className={`lockup lockup--${size} lockup--${variant}`} aria-label="Side Quest Maidens" role="img">
       <GemMark variant={size === "sm" ? "icon" : variant} ground="var(--ground)" className="lockup__mark" />
       <span className="lockup__words" aria-hidden="true">
         <span className="lockup__name">SIDEQUEST</span>
-        <span className="lockup__forge">FORGE</span>
+        <span className="lockup__sub">MAIDENS</span>
       </span>
     </span>
   );

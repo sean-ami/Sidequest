@@ -1,6 +1,6 @@
-# sidequestforge.com
+# sidequestmaidens.com
 
-The Side Quest Forge site: React + Vite, served from Cloudflare Workers (static assets plus a small edge API).
+The Side Quest Maidens site: React + Vite, served from Cloudflare Workers (static assets plus a small edge API).
 
 ## Run it
 
