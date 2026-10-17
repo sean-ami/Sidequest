@@ -39,8 +39,22 @@ npm run deploy     # build and deploy to Cloudflare (first time: `npx wrangler l
 2. In `maidens.ts`, add `art: a("tsukiyo", { focus: { x: 0.55, y: 0.4 } })`. `focus` is where her face is, 0–1. It anchors the glow and keeps her on screen on phones.
 3. Open `/studio` to check the scene against the locked print crops (§11 of the strategy).
 
-## Deploy to sidequestforge.com
+## Share image
 
-1. `npx wrangler login`, then `npm run deploy`. You get a `*.workers.dev` URL.
-2. Uncomment `routes` in `wrangler.jsonc` (custom domains for the apex and `www`) and deploy again. Cloudflare creates the DNS records since the zone is already on your account.
-3. Optional: connect this repo in **Workers & Pages → your worker → Settings → Builds** so every push to `main` deploys.
+`public/og.png` (1200×630) is rendered from `brand/og.html`. Edit the HTML, open it in Chrome at 1200×630 and screenshot the `.og` element, or run any headless browser against it.
+
+## Deploy to sidequestmaidens.com
+
+`wrangler.jsonc` already attaches `sidequestmaidens.com` and `www.sidequestmaidens.com` as Worker custom domains.
+
+**Before the first deploy:** in the Cloudflare dashboard → sidequestmaidens.com → DNS, delete any existing A, AAAA or CNAME records on `@` and `www` (registrar parking records). Wrangler creates the right ones and refuses to overwrite.
+
+**Option A, deploy on every push (recommended):** Workers & Pages → Create → Import a repository → pick this repo. Build command `npm run build`, deploy command `npx wrangler deploy`, production branch whichever branch holds this code.
+
+**Option B, from your computer:**
+```bash
+npx wrangler login
+npm run deploy
+```
+
+Then check `https://sidequestmaidens.com/api/health` returns `{"ok":true,...}`, and paste the URL into a link-preview checker to confirm the share image.

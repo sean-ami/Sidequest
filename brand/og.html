@@ -1,0 +1,69 @@
+<!doctype html>
+<!-- Source for public/og.png (1200×630 share image). Render: see README "Share image". -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; }
+  .og {
+    width: 1200px; height: 630px; box-sizing: border-box; position: relative; overflow: hidden;
+    background:
+      radial-gradient(520px 380px at 300px 300px, rgba(255, 62, 138, 0.22), transparent 70%),
+      radial-gradient(420px 300px at 1080px 600px, rgba(61, 214, 200, 0.10), transparent 70%),
+      #0B0E16;
+    color: #E9EEF6; font-family: "Space Grotesk", sans-serif;
+    display: flex; flex-direction: column; justify-content: center; padding: 0 96px;
+  }
+  .og::after { /* hairline frame, like the lockup sheet's panels */
+    content: ""; position: absolute; inset: 28px; border: 1px solid rgba(184, 192, 208, 0.14); border-radius: 20px;
+  }
+  .lockup { display: flex; align-items: center; gap: 44px; }
+  .words { display: flex; flex-direction: column; gap: 14px; }
+  .name { font-size: 118px; font-weight: 700; letter-spacing: -5px; line-height: 0.9; }
+  .forge { font-size: 34px; font-weight: 500; letter-spacing: 43px; color: #3DD6C8; }
+  .foot {
+    position: absolute; left: 96px; right: 96px; bottom: 62px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: 3px; color: #8A94A8;
+  }
+  .foot b { color: #E9EEF6; font-weight: 500; letter-spacing: 1px; }
+  .dot { color: #FF3E8A; }
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="lockup">
+    <svg width="250" height="250" viewBox="0 0 140 140" aria-hidden="true">
+      <polygon points="40,30 20,52 45,52" fill="#DB3577"/>
+      <polygon points="40,30 45,52 70,30" fill="#FF8BB9"/>
+      <polygon points="70,30 45,52 95,52" fill="#FF3E8A"/>
+      <polygon points="70,30 95,52 100,30" fill="#FF8BB9"/>
+      <polygon points="100,30 95,52 120,52" fill="#DB3577"/>
+      <polygon points="20,52 45,52 70,120" fill="#9E2656"/>
+      <polygon points="45,52 70,52 70,120" fill="#FF3E8A"/>
+      <polygon points="70,52 95,52 70,120" fill="#DB3577"/>
+      <polygon points="95,52 120,52 70,120" fill="#9E2656"/>
+      <polygon points="47,34 54,34 48,47" fill="#FFFFFF" opacity="0.55"/>
+      <g fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+        <polyline points="20,52 120,52"/>
+        <polyline points="40,30 45,52 70,30 95,52 100,30"/>
+        <polyline points="45,52 70,120 95,52"/>
+        <polyline points="70,52 70,120"/>
+      </g>
+      <polygon points="40,30 100,30 120,52 70,120 20,52" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M110 6 Q112 29 134 31 Q112 33 110 56 Q108 33 86 31 Q108 29 110 6 Z" fill="#FFFFFF" stroke="#0B0E16" stroke-width="5" paint-order="stroke" stroke-linejoin="round"/>
+      <path d="M126 60 Q127 67 133 68 Q127 69 126 76 Q125 69 119 68 Q125 67 126 60 Z" fill="#3DD6C8"/>
+    </svg>
+    <div class="words">
+      <div class="name">SIDEQUEST</div>
+      <div class="forge">FORGE</div>
+    </div>
+  </div>
+  <div class="foot">
+    <span>NINE MAIDENS <span class="dot">·</span> NINE STATIONS <span class="dot">·</span> ORIGINAL LO-FI</span>
+    <b>sidequestmaidens.com</b>
+  </div>
+</div>
+</body>
+</html>

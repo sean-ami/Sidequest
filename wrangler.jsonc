@@ -9,7 +9,12 @@
     // Only /api/* reaches the Worker; everything else is served straight from static assets.
     "run_worker_first": ["/api/*"]
   },
-  "observability": { "enabled": true }
-  // After the first deploy, attach the domain:
-  // "routes": [{ "pattern": "sidequestforge.com", "custom_domain": true }, { "pattern": "www.sidequestforge.com", "custom_domain": true }]
+  "observability": { "enabled": true },
+  // Custom domains: Cloudflare creates the DNS records on deploy. The zone must be in the same
+  // account, and any existing A/AAAA/CNAME records on these hostnames must be deleted first.
+  "routes": [
+    { "pattern": "sidequestmaidens.com", "custom_domain": true },
+    { "pattern": "www.sidequestmaidens.com", "custom_domain": true }
+    // add sidequestforge.com here too to serve the same site on both domains
+  ]
 }
