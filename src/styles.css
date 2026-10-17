@@ -1235,6 +1235,11 @@ section {
   font-size: 1.6rem;
   margin-bottom: 12px;
 }
+.live-card__note {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
 .disclosure {
   margin-top: 30px;
   color: var(--muted);
@@ -1289,7 +1294,7 @@ section {
 }
 .footer__cols {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: 1fr 1fr minmax(0, 1.6fr);
   gap: 24px;
 }
 .footer__cols div {
@@ -1309,6 +1314,17 @@ section {
   text-decoration: none;
   color: var(--soft);
   overflow-wrap: anywhere;
+}
+.footer__cols a.footer__email {
+  overflow-wrap: normal;
+}
+@media (max-width: 560px) {
+  .footer__cols {
+    grid-template-columns: 1fr 1fr;
+  }
+  .footer__cols > div:last-child {
+    grid-column: 1 / -1;
+  }
 }
 .footer__cols a:hover {
   color: var(--teal);

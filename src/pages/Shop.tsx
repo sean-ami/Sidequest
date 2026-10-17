@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { ProductMocks } from "../components/ProductMocks";
 import { MAIDENS } from "../data/maidens";
+import { EMAIL } from "../lib/paths";
 import { useTitle } from "../lib/useTitle";
 
 export function Shop() {
@@ -26,6 +27,9 @@ export function Shop() {
           </li>
         ))}
       </ul>
+      <p className="note">
+        Want to know when it opens, or have a question? Email <a href={`mailto:${EMAIL.hello}`}>{EMAIL.hello}</a>.
+      </p>
     </section>
   );
 }

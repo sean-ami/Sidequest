@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useStation } from "../lib/station";
 import { Lockup } from "./GemMark";
-import { go } from "../lib/paths";
+import { EMAIL, go } from "../lib/paths";
 
 export function Layout() {
   const { current, audioOn, toggleAudio } = useStation();
@@ -59,7 +59,12 @@ export function Layout() {
           </div>
           <div>
             <h4>Contact</h4>
-            <a href="mailto:hello@sidequestmaidens.com">hello@sidequestmaidens.com</a>
+            {[EMAIL.hello, EMAIL.support].map((e) => (
+              <a key={e} className="footer__email" href={`mailto:${e}`}>
+                {e.split("@")[0]}
+                <wbr />@{e.split("@")[1]}
+              </a>
+            ))}
           </div>
         </nav>
         <p className="footer__fine">

@@ -7,7 +7,8 @@ export const asset = (p: string) => import.meta.env.BASE_URL + p.replace(/^\//, 
 
 const OUTBOUND = {
   youtube: "https://www.youtube.com/@sidequestmaidens",
-  whatnot: "https://www.whatnot.com/user/sidequestsupplyco",
+  // Referral invite. Still under the old Whatnot name until pending orders clear and the rename is allowed.
+  whatnot: "https://www.whatnot.com/invite/sidequestsupplyco",
   instagram: "https://www.instagram.com/sidequestmaidens",
   tiktok: "https://www.tiktok.com/@sidequestmaidens",
   bluesky: "https://bsky.app/profile/sidequestmaidens.com",
@@ -17,3 +18,9 @@ const OUTBOUND = {
 export const go = (name: keyof typeof OUTBOUND) => (PREVIEW ? OUTBOUND[name] : `/go/${name}`);
 
 export const isPreview = PREVIEW;
+
+/** Public addresses, routed to the owner's inbox by Cloudflare Email Routing. */
+export const EMAIL = {
+  hello: "hello@sidequestmaidens.com",
+  support: "support@sidequestmaidens.com",
+} as const;
