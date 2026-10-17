@@ -45,7 +45,7 @@ export function Station() {
         <dl className="stats">
           <div><dt>Tempo</dt><dd>{maiden.bpm[0]}–{maiden.bpm[1]} BPM</dd></div>
           <div><dt>Made for</dt><dd>{maiden.use}</dd></div>
-          <div><dt>Signature</dt><dd>{maiden.signature ?? "Coming soon"}</dd></div>
+          <div><dt>Signature</dt><dd>{maiden.signature ?? "In progress"}</dd></div>
         </dl>
       </section>
 

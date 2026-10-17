@@ -29,7 +29,7 @@ export function Home() {
             <br />
             Nine stations.
             <br />
-            <em>All original.</em>
+            <em>Made here.</em>
           </h1>
           <p>Original characters and original lo-fi. Animated scenes to study, code and sleep to, and the art you can take home.</p>
           <div className="cta-row">

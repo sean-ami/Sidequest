@@ -175,7 +175,7 @@ p {
 .lockup__sub {
   font-weight: 500;
   font-size: max(0.29em, 8.5px);
-  letter-spacing: 1em; /* MAIDENS is two letters longer than the sheet's FORGE; tracking eased to keep the width */
+  letter-spacing: 0.62em; /* MAIDENS is two letters longer than the sheet's FORGE, so it tracks tighter */
   color: var(--teal);
   line-height: 1;
 }

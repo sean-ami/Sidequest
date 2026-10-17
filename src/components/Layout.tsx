@@ -41,7 +41,7 @@ export function Layout() {
       <footer className="footer">
         <div className="footer__brand">
           <Lockup size="md" />
-          <p>Nine original characters, each hosting her own lo-fi station. Original music, original art.</p>
+          <p>Original characters · original music. Made here, by hand and by heart.</p>
         </div>
         <nav className="footer__cols" aria-label="Footer">
           <div>

@@ -6,7 +6,7 @@ const PREVIEW = import.meta.env.MODE === "preview-artifact";
 export const asset = (p: string) => import.meta.env.BASE_URL + p.replace(/^\//, "");
 
 const OUTBOUND = {
-  youtube: "https://www.youtube.com/@sidequestlofi",
+  youtube: "https://www.youtube.com/@sidequestmaidens",
   whatnot: "https://www.whatnot.com/user/sidequestsupplyco",
   instagram: "https://www.instagram.com/sidequestmaidens",
   tiktok: "https://www.tiktok.com/@sidequestmaidens",
