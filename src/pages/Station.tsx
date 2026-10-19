@@ -29,14 +29,18 @@ export function Station() {
       <section className="station-hero">
         <ParallaxScene key={maiden.slug} maiden={maiden} className="scene--full" />
         <div className="station-hero__copy">
-          <span className="mono">FM {maiden.freq} · {maiden.genre}</span>
+          <span className="mono">FM {maiden.freq} · {maiden.genre}{maiden.live ? "" : " · Coming soon"}</span>
           <h1>{maiden.station}</h1>
           <p>with {maiden.name}. {maiden.tagline}</p>
           <div className="cta-row">
             <button className={`btn btn--primary ${audioOn ? "is-on" : ""}`} onClick={toggleAudio}>
               {audioOn ? "◼ Stop the radio" : "▶ Play station ambience"}
             </button>
-            <a href={go("youtube")} className="btn">Full 3-hour mixes ↗</a>
+            {maiden.live ? (
+              <a href={go("youtube")} className="btn">Full 3-hour mixes ↗</a>
+            ) : (
+              <span className="btn btn--static">Station launching soon</span>
+            )}
           </div>
         </div>
       </section>

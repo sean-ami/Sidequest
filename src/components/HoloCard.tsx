@@ -48,6 +48,7 @@ export function HoloCard({ maiden, index }: { maiden: Maiden; index: number }) {
             )}
           </div>
           <div className="holo__foil" />
+          {!maiden.live && <span className="holo__soon">Coming soon</span>}
           <div className="holo__glare" />
           <div className="holo__label">
             <span className="mono">No. {String(index + 1).padStart(2, "0")} · FM {maiden.freq}</span>

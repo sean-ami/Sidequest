@@ -73,6 +73,7 @@ export function ParallaxScene({ maiden, guides, className }: Props) {
       />
       <Atmosphere mood={maiden.mood === "rain" ? "rain" : maiden.mood} color={maiden.color} color2={maiden.color2} pointer={pointer} depth={60} density={0.25} />
       <div className="scene__vignette" />
+      {!maiden.live && <ComingSoon />}
       {guides && (
         <div className="scene__guides" aria-hidden="true">
           <div className="guide guide--mat"><span>2:1 desk mat</span></div>
@@ -151,6 +152,14 @@ export function Placeholder({ maiden }: { maiden: Maiden }) {
       <div className="placeholder__sky" />
       <span className="placeholder__glyph">{maiden.name}</span>
       <span className="placeholder__tag">art in progress</span>
+    </div>
+  );
+}
+
+export function ComingSoon() {
+  return (
+    <div className="soon" aria-label="Coming soon">
+      <span className="soon__stamp">Coming soon</span>
     </div>
   );
 }

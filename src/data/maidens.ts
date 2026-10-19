@@ -41,6 +41,8 @@ export type Maiden = {
   color2: string;
   freq: string;
   priority: 1 | 2;
+  /** Station is launched. Everyone else shows "Coming soon". */
+  live?: boolean;
   signature?: string;
   art?: Art;
 };
@@ -75,6 +77,7 @@ export const MAIDENS: Maiden[] = [
     color2: "#5CFF9D",
     freq: "88.1",
     priority: 1,
+    live: true,
     signature: "Lightning synced to the thunder",
     art: a("briar", { focus: { x: 0.6, y: 0.35 } }),
   },
@@ -92,6 +95,7 @@ export const MAIDENS: Maiden[] = [
     color2: "#3DE0F0",
     freq: "91.7",
     priority: 1,
+    live: true,
     signature: "Bubble Pop",
     art: a("vega", {
       card: asset("/art/vega/card.webp"),
@@ -121,6 +125,7 @@ export const MAIDENS: Maiden[] = [
     color2: "#FFE07A",
     freq: "94.3",
     priority: 1,
+    live: true,
     signature: "Nova's Dash",
     art: a("nova", { focus: { x: 0.42, y: 0.42 } }),
   },

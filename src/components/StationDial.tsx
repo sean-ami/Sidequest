@@ -97,13 +97,14 @@ export function StationDial() {
         <span>
           with {current.name} · {current.genre} · {current.bpm[0]}–{current.bpm[1]} BPM
         </span>
+        {!current.live && <span className="dial__soon">Coming soon</span>}
       </div>
 
       <ul className="dial__list">
         {MAIDENS.map((m) => (
           <li key={m.slug}>
             <button
-              className={m === current ? "is-active" : ""}
+              className={`${m === current ? "is-active" : ""} ${m.live ? "" : "is-soon"}`}
               style={{ "--m": m.color } as CSSProperties}
               onClick={() => tune(m)}
             >
