@@ -43,6 +43,8 @@ export type Maiden = {
   priority: 1 | 2;
   /** Station is launched. Everyone else shows "Coming soon". */
   live?: boolean;
+  /** Her YouTube playlist and mixes, newest first. `tag` is the ?v= value used in that video's description link. */
+  youtube?: { playlist: string; videos: { id: string; tag: string; title: string }[] };
   signature?: string;
   art?: Art;
 };
@@ -78,6 +80,10 @@ export const MAIDENS: Maiden[] = [
     freq: "88.1",
     priority: 1,
     live: true,
+    youtube: {
+      playlist: "PLQXbtNeqg6Ik",
+      videos: [{ id: "Omjt8pX8N34", tag: "ep1", title: "Rainy Greenhouse Night · Lofi & Thunder for Deep Sleep" }],
+    },
     signature: "Lightning synced to the thunder",
     art: a("briar", { focus: { x: 0.6, y: 0.35 } }),
   },

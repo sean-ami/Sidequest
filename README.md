@@ -39,6 +39,14 @@ npm run deploy     # build and deploy to Cloudflare (first time: `npx wrangler l
 2. In `maidens.ts`, add `art: a("tsukiyo", { focus: { x: 0.55, y: 0.4 } })`. `focus` is where her face is, 0–1. It anchors the glow and keeps her on screen on phones.
 3. Open `/studio` to check the scene against the locked print crops (§11 of the strategy).
 
+## Video stats
+
+Each video description links to its Maiden with its own tag, e.g. `https://sidequestmaidens.com/briar?v=ep1`. Station pages report the visit, mix plays and playlist clicks to `/api/hit`, which a SQLite-backed Durable Object (`StatsCounter` in `worker/index.ts`) counts by station × tag × day. No IPs or cookies are stored; visitors are a daily-rotating hash. Bots and headless browsers are ignored.
+
+Read them at `/studio/stats` (unlinked, `noindex`), which also has a link builder for new descriptions. It needs a `STATS_KEY` secret on the Worker: Cloudflare dashboard → Workers & Pages → sidequestmaidens → Settings → Variables and Secrets → Add → type Secret, name `STATS_KEY`, any long random value. For local testing put `STATS_KEY=...` in `.dev.vars` (gitignored).
+
+Add each new video to her `youtube.videos` list in `src/data/maidens.ts` (newest first) so it becomes the station page's "Latest mix".
+
 ## Share image
 
 `public/og.png` (1200×630) is rendered from `brand/og.html`. Edit the HTML, open it in Chrome at 1200×630 and screenshot the `.og` element, or run any headless browser against it.

@@ -9,6 +9,7 @@ import { NotFound } from "./pages/NotFound";
 import { Shop } from "./pages/Shop";
 import { Station } from "./pages/Station";
 import { Studio } from "./pages/Studio";
+import { StudioStats } from "./pages/StudioStats";
 
 // The preview build is hosted at a single URL, so it routes in memory.
 const createRouter = isPreview ? createMemoryRouter : createBrowserRouter;
@@ -22,6 +23,7 @@ const router = createRouter([
       { path: "/shop", element: <Shop /> },
       { path: "/live", element: <Live /> },
       { path: "/studio", element: <Studio /> },
+      { path: "/studio/stats", element: <StudioStats /> },
       // /briar, /vega, … per-Maiden station pages (the link slugs in video descriptions)
       { path: "/:slug", element: <Station /> },
       { path: "*", element: <NotFound /> },

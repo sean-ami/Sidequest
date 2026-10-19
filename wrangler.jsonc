@@ -10,6 +10,10 @@
     "run_worker_first": ["/api/*"]
   },
   "observability": { "enabled": true },
+  // Per-video visit counter (worker/index.ts). SQLite-backed Durable Objects run on the free plan
+  // and need no dashboard setup. Reading /api/stats needs a STATS_KEY secret (see README).
+  "durable_objects": { "bindings": [{ "name": "STATS", "class_name": "StatsCounter" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["StatsCounter"] }],
   // Custom domains: Cloudflare creates the DNS records on deploy. The zone must be in the same
   // account, and any existing A/AAAA/CNAME records on these hostnames must be deleted first.
   "routes": [

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useStation } from "../lib/station";
 import { Lockup } from "./GemMark";
+import { notePageView } from "../lib/track";
 import { EMAIL, go } from "../lib/paths";
 
 export function Layout() {
@@ -10,6 +11,7 @@ export function Layout() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    notePageView(pathname);
     window.scrollTo(0, 0);
     setOpen(false);
   }, [pathname]);
