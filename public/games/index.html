@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Side Quests · Side Quest Maidens</title>
+    <meta name="description" content="Small daily games with the Side Quest Maidens: a Nova focus timer, gem merging, card memory, potion sorting and a rooftop dash. Free, no sign-up." />
+    <meta name="theme-color" content="#0B0E16" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://sidequestmaidens.com/games/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Side Quest Maidens" />
+    <meta property="og:title" content="Side Quests · Side Quest Maidens" />
+    <meta property="og:description" content="A new side quest every day. Play with the Maidens, collect wallpapers and card backs." />
+    <meta property="og:url" content="https://sidequestmaidens.com/games/" />
+    <meta property="og:image" content="https://sidequestmaidens.com/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="kit/theme.css" />
+    <link rel="stylesheet" href="hub.css" />
+    <script type="module" src="hub.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="hub-nav">
+      <a class="hub-nav__home" href="/" aria-label="Side Quest Maidens home">
+        <svg class="gem" viewBox="0 0 140 140" aria-hidden="true">
+          <polygon points="40,30 20,52 45,52" fill="#DB3577" />
+          <polygon points="40,30 45,52 70,30" fill="#FF8BB9" />
+          <polygon points="70,30 45,52 95,52" fill="#FF3E8A" />
+          <polygon points="70,30 95,52 100,30" fill="#FF8BB9" />
+          <polygon points="100,30 95,52 120,52" fill="#DB3577" />
+          <polygon points="20,52 45,52 70,120" fill="#9E2656" />
+          <polygon points="45,52 70,52 70,120" fill="#FF3E8A" />
+          <polygon points="70,52 95,52 70,120" fill="#DB3577" />
+          <polygon points="95,52 120,52 70,120" fill="#9E2656" />
+          <g fill="none" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+            <polyline points="20,52 120,52" />
+            <polyline points="40,30 45,52 70,30 95,52 100,30" />
+            <polyline points="45,52 70,120 95,52" />
+            <polygon points="40,30 100,30 120,52 70,120 20,52" stroke-width="4.5" />
+          </g>
+        </svg>
+        <span class="hub-nav__words"><b>SIDEQUEST</b><small>MAIDENS</small></span>
+      </a>
+      <nav class="hub-nav__links" aria-label="Site">
+        <a href="/maidens">Maidens</a>
+        <a href="/shop">Shop</a>
+        <a href="/games/" aria-current="page">Games</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hub-hero" aria-labelledby="hub-title">
+        <p class="eyebrow">Side Quest Arcade</p>
+        <h1 id="hub-title">Side Quests</h1>
+        <p class="hub-hero__lede">Small games with the Maidens. A new daily puzzle every day at 00:00 UTC, the same one for everyone.</p>
+      </section>
+
+      <section class="today" id="today" aria-labelledby="today-title" aria-live="polite">
+        <div class="today__art" aria-hidden="true"><img alt="" id="today-art" /></div>
+        <div class="today__body">
+          <p class="eyebrow"><span>Today's Side Quest</span> · <span class="mono" id="today-date"></span></p>
+          <h2 id="today-title">Loading…</h2>
+          <p id="today-tagline"></p>
+          <div class="today__actions">
+            <a class="btn" id="today-play" href="#">Play</a>
+            <span class="today__reset mono" id="today-reset"></span>
+          </div>
+          <p class="today__done" id="today-done" hidden></p>
+        </div>
+      </section>
+
+      <section aria-labelledby="games-title">
+        <h2 id="games-title" class="section-title">Games</h2>
+        <ul class="tiles" id="tiles" role="list"></ul>
+      </section>
+
+      <section aria-labelledby="collection-title" class="collection">
+        <div class="collection__head">
+          <h2 id="collection-title" class="section-title">Collection</h2>
+          <p class="mono collection__count" id="collection-count"></p>
+        </div>
+        <p class="collection__empty" id="collection-empty" hidden>Nothing here yet. Side quests unlock Maiden wallpapers, card backs and Focus backgrounds, and they all land here.</p>
+        <ul class="collection__grid" id="collection-grid" role="list"></ul>
+        <p class="collection__note" id="storage-note" hidden>This browser is blocking storage, so progress lasts until you close the tab.</p>
+      </section>
+    </main>
+
+    <footer class="hub-footer">
+      <nav aria-label="Footer">
+        <a href="/">sidequestmaidens.com</a>
+        <a href="/shop">Shop</a>
+        <a href="/go/youtube">Lo-fi on YouTube</a>
+      </nav>
+      <p>Free to play. No sign-up, no trackers. Progress stays in your browser.</p>
+    </footer>
+  </body>
+</html>

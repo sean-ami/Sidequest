@@ -1,0 +1,2 @@
+# Workers static assets: files here are not uploaded (wrangler reads dist/.assetsignore).
+games/README.md

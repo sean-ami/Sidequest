@@ -1,0 +1,380 @@
+/* Side Quest Arcade kit — tokens, fonts and shared components. Every game links this first.
+   Palette and type match the main site (src/styles.css); fonts are self-hosted OFL files. */
+
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("../assets/fonts/space-grotesk-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+}
+
+:root {
+  --navy: #0b0e16;
+  --ink: #10141f;
+  --ink-2: #161b29;
+  --line: rgba(184, 192, 208, 0.14);
+  --text: #e9eef6;
+  --muted: #8a94a8;
+  --soft: #b8c0d0;
+  --teal: #3dd6c8;
+  --pink: #ff3e8a;
+  --nova: #ff8a1f;
+  --briar: #7ec13a;
+  --vega: #16d9e3;
+  /* --accent follows the Maiden a game is themed on; games set it on <body> or a container. */
+  --accent: var(--pink);
+  --ui: "Space Grotesk", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --gutter: clamp(16px, 4vw, 40px);
+  --radius: 16px;
+  --focus: 0 0 0 3px var(--navy), 0 0 0 5px var(--teal);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--navy);
+  color: var(--text);
+  font: 400 16px/1.5 var(--ui);
+  -webkit-font-smoothing: antialiased;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+a {
+  color: var(--teal);
+}
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+  border-radius: 8px;
+}
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+  margin: 0 0 0.4em;
+  letter-spacing: -0.01em;
+}
+.mono,
+.num {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 0.5em;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 44px;
+  padding: 0.6em 1.2em;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--navy);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease), filter 0.15s;
+}
+.btn:hover {
+  filter: brightness(1.1);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn--ghost {
+  background: transparent;
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.btn--ghost:hover {
+  box-shadow: inset 0 0 0 1px var(--soft);
+}
+.btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--soft);
+  cursor: pointer;
+}
+.icon-btn:hover {
+  background: var(--ink-2);
+  color: var(--text);
+}
+.icon-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ---------- panels ---------- */
+.panel {
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(16px, 3vw, 24px);
+}
+
+/* ---------- card frame ----------
+   <div class="sq-card" style="--accent:#ff8a1f"><img class="sq-card__art" …><span class="sq-card__name">Nova</span></div>
+   Portrait 5:7 like a trading card. The frame and gem badge are pure CSS, so games draw frames
+   over frameless card art. .sq-card--back is the shared card back (navy, gem, teal ring). */
+.sq-card {
+  --gem: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Cpolygon points='40,30 20,52 45,52' fill='%23DB3577'/%3E%3Cpolygon points='40,30 45,52 70,30' fill='%23FF8BB9'/%3E%3Cpolygon points='70,30 45,52 95,52' fill='%23FF3E8A'/%3E%3Cpolygon points='70,30 95,52 100,30' fill='%23FF8BB9'/%3E%3Cpolygon points='100,30 95,52 120,52' fill='%23DB3577'/%3E%3Cpolygon points='20,52 45,52 70,120' fill='%239E2656'/%3E%3Cpolygon points='45,52 70,52 70,120' fill='%23FF3E8A'/%3E%3Cpolygon points='70,52 95,52 70,120' fill='%23DB3577'/%3E%3Cpolygon points='95,52 120,52 70,120' fill='%239E2656'/%3E%3Cg fill='none' stroke='%23fff' stroke-width='3' stroke-linejoin='round'%3E%3Cpolyline points='20,52 120,52'/%3E%3Cpolyline points='40,30 45,52 70,30 95,52 100,30'/%3E%3Cpolyline points='45,52 70,120 95,52'/%3E%3Cpolygon points='40,30 100,30 120,52 70,120 20,52' stroke-width='5'/%3E%3C/g%3E%3C/svg%3E");
+  position: relative;
+  aspect-ratio: 5 / 7;
+  border-radius: 14px;
+  padding: 6px;
+  background: linear-gradient(150deg, var(--accent), color-mix(in srgb, var(--accent) 35%, var(--navy)) 55%, var(--accent));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  isolation: isolate;
+}
+.sq-card__art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 9px;
+  background: var(--ink-2);
+}
+.sq-card::after {
+  /* gem badge, top-left */
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 15%;
+  aspect-ratio: 1;
+  background: var(--gem) center / contain no-repeat;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+}
+.sq-card__name {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  padding: 1.6em 0.8em 0.6em;
+  border-radius: 0 0 9px 9px;
+  background: linear-gradient(transparent, rgba(11, 14, 22, 0.9));
+  font-weight: 700;
+  font-size: clamp(0.8rem, 2.4vw, 1rem);
+}
+.sq-card--back {
+  background: var(--navy);
+  box-shadow: inset 0 0 0 2px var(--line), 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+.sq-card--back::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 68%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 3px solid var(--back-ring, var(--teal));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--back-ring, var(--teal)) 50%, transparent);
+}
+.sq-card--back::after {
+  top: 50%;
+  left: 50%;
+  width: 38%;
+  transform: translate(-50%, -46%);
+}
+.sq-card--locked {
+  filter: grayscale(1) brightness(0.5);
+}
+
+/* ---------- shared header ---------- */
+.sq-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px var(--gutter);
+  background: color-mix(in srgb, var(--navy) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.sq-header__title {
+  flex: 1;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sq-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 10px 0 4px;
+  color: var(--soft);
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-radius: 12px;
+}
+.sq-header__back:hover {
+  color: var(--text);
+  background: var(--ink-2);
+}
+.sq-header__back svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* ---------- modal ---------- */
+.sq-modal {
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--text);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+.sq-modal::backdrop {
+  background: rgba(5, 7, 12, 0.72);
+  backdrop-filter: blur(4px);
+}
+.sq-modal__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 12px 0 20px;
+}
+.sq-modal__head h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.2rem;
+}
+.sq-modal__body {
+  padding: 8px 20px 20px;
+}
+.sq-modal[open] {
+  animation: sq-pop 0.22s var(--ease);
+}
+@keyframes sq-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+/* ---------- results ---------- */
+.sq-results__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
+  margin: 12px 0 16px;
+  padding: 0;
+  list-style: none;
+}
+.sq-results__stats li {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--ink-2);
+}
+.sq-results__stats span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.sq-results__stats b {
+  font-family: var(--mono);
+  font-size: 1.3rem;
+}
+.sq-results__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------- toast ---------- */
+.sq-toasts {
+  position: fixed;
+  left: 50%;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 100;
+  display: grid;
+  gap: 8px;
+  width: min(420px, calc(100vw - 32px));
+  pointer-events: none;
+}
+.sq-toast {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: sq-pop 0.2s var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

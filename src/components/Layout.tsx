@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useStation } from "../lib/station";
 import { Lockup } from "./GemMark";
-import { EMAIL, go } from "../lib/paths";
+import { EMAIL, GAMES, go } from "../lib/paths";
 
 export function Layout() {
   const { current, audioOn, toggleAudio } = useStation();
@@ -28,6 +28,8 @@ export function Layout() {
           <NavLink to="/maidens">Maidens</NavLink>
           <NavLink to="/shop">Shop</NavLink>
           <NavLink to="/live">Live</NavLink>
+          {/* /games/ is a separate static app (public/games/), so a plain link leaves the SPA */}
+          <a href={GAMES}>Games</a>
           <a href={go("youtube")}>Lo-Fi ↗</a>
         </nav>
         <button className={`nav__radio ${audioOn ? "is-on" : ""}`} onClick={toggleAudio} aria-pressed={audioOn} title="Toggle station ambience">
@@ -49,6 +51,7 @@ export function Layout() {
             <Link to="/maidens">The Maidens</Link>
             <Link to="/shop">Shop</Link>
             <Link to="/live">Live shows</Link>
+            <a href={GAMES}>Side Quests</a>
           </div>
           <div>
             <h4>Follow</h4>

@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "note": "Paths starting with / are site-absolute; anything else resolves against games/assets/maidens/<id>/. 'files' may be an object (key -> path) or a list of filenames from the CardForge export (key = filename without extension). Seeded from the existing site art in public/art/ until the CardForge game-asset export lands.",
+  "maidens": [
+    {
+      "id": "nova",
+      "name": "Nova",
+      "station": "Morning Focus",
+      "accent": "#FF8A1F",
+      "bpm": [80, 90],
+      "files": { "scene": "/art/nova/scene.webp", "scene_sm": "/art/nova/scene-sm.webp" }
+    },
+    {
+      "id": "briar",
+      "name": "Briar",
+      "station": "Rainfall",
+      "accent": "#7EC13A",
+      "bpm": [70, 80],
+      "files": { "scene": "/art/briar/scene.webp", "scene_sm": "/art/briar/scene-sm.webp" }
+    },
+    {
+      "id": "vega",
+      "name": "Vega",
+      "station": "Neon Signal",
+      "accent": "#16D9E3",
+      "bpm": [85, 100],
+      "files": {
+        "scene": "/art/vega/scene.webp",
+        "scene_sm": "/art/vega/scene-sm.webp",
+        "card": "/art/vega/card.webp",
+        "card_sm": "/art/vega/card-sm.webp"
+      }
+    },
+    {
+      "id": "tsukiyo",
+      "name": "Tsukiyo",
+      "station": "Moonlight",
+      "accent": "#B77CFF",
+      "bpm": [70, 85],
+      "files": { "card": "/art/tsukiyo/card.webp", "card_sm": "/art/tsukiyo/card-sm.webp" }
+    },
+    {
+      "id": "aurelia",
+      "name": "Aurelia",
+      "station": "Starfall",
+      "accent": "#FFC84A",
+      "bpm": [60, 70],
+      "files": { "card": "/art/aurelia/card.webp", "card_sm": "/art/aurelia/card-sm.webp" }
+    },
+    {
+      "id": "mara",
+      "name": "Mara",
+      "station": "After Hours",
+      "accent": "#E3263A",
+      "bpm": [80, 90],
+      "files": { "card": "/art/mara/card.webp", "card_sm": "/art/mara/card-sm.webp" }
+    },
+    {
+      "id": "mimi",
+      "name": "Mimi",
+      "station": "Rooftop Lights",
+      "accent": "#FF8FC8",
+      "bpm": [95, 110],
+      "files": { "card": "/art/mimi/card.webp", "card_sm": "/art/mimi/card-sm.webp" }
+    },
+    {
+      "id": "jackie",
+      "name": "Jackie",
+      "station": "Desert Highway",
+      "accent": "#2ED3C6",
+      "bpm": [75, 85],
+      "files": { "card": "/art/jackie/card.webp", "card_sm": "/art/jackie/card-sm.webp" }
+    },
+    {
+      "id": "tilt",
+      "name": "Tilt",
+      "station": "After Closing",
+      "accent": "#B6FF2E",
+      "bpm": [90, 100],
+      "files": { "card": "/art/tilt/card.webp", "card_sm": "/art/tilt/card-sm.webp" }
+    }
+  ]
+}

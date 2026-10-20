@@ -19,6 +19,9 @@ export const go = (name: keyof typeof OUTBOUND) => (PREVIEW ? OUTBOUND[name] : `
 
 export const isPreview = PREVIEW;
 
+/** The games hub (public/games/). The preview build doesn't carry it, so it links to the live site. */
+export const GAMES = PREVIEW ? "https://sidequestmaidens.com/games/" : "/games/";
+
 /** Public addresses, routed to the owner's inbox by Cloudflare Email Routing. */
 export const EMAIL = {
   hello: "hello@sidequestmaidens.com",

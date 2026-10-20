@@ -1,0 +1,50 @@
+{
+  "note": "Hub tiles, in display order. status: \"live\" shows the tile as playable, \"soon\" greys it out. daily: true puts the game in the Today's Side Quest rotation (once live). maiden is the companion whose accent and art the tile uses.",
+  "games": [
+    {
+      "id": "focus",
+      "title": "Morning Focus with Nova",
+      "tagline": "A Pomodoro timer with Nova's station. Four quests a day.",
+      "maiden": "nova",
+      "href": "focus/",
+      "status": "soon",
+      "daily": false
+    },
+    {
+      "id": "gem-merge",
+      "title": "Gem Merge",
+      "tagline": "Slide, merge and cut your way up to a Maiden's Heart.",
+      "maiden": "vega",
+      "href": "gem-merge/",
+      "status": "soon",
+      "daily": true
+    },
+    {
+      "id": "memory",
+      "title": "Maiden Memory",
+      "tagline": "Flip, match and meet the Maidens' custom cards.",
+      "maiden": "vega",
+      "href": "memory/",
+      "status": "soon",
+      "daily": true
+    },
+    {
+      "id": "potion-sort",
+      "title": "Briar's Potion Sort",
+      "tagline": "Pour potions into order in a rainy greenhouse.",
+      "maiden": "briar",
+      "href": "potion-sort/",
+      "status": "soon",
+      "daily": true
+    },
+    {
+      "id": "nova-dash",
+      "title": "Nova's Dash",
+      "tagline": "One button, rooftops at sunrise, and a gold streak.",
+      "maiden": "nova",
+      "href": "nova-dash/",
+      "status": "soon",
+      "daily": true
+    }
+  ]
+}
