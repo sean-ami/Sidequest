@@ -24,7 +24,8 @@ npm run deploy     # build and deploy to Cloudflare (first time: `npx wrangler l
 | `src/components/Atmosphere.tsx` | Canvas particles per mood: rain + lightning, neon, sun motes, petals, stars… |
 | `src/components/HoloCard.tsx` | Trading-card gallery with holo foil, glare and flip. |
 | `src/audio/ambience.ts` | Procedural Web Audio lo-fi in each station's key and tempo; thunder and pop SFX. |
-| `worker/index.ts` | Edge API (`/api/*` only). Future home of the Shopify Storefront proxy. |
+| `worker/index.ts` | Edge API (`/api/*`, `/admin/*`): visit counter, Side Quest Vote (`VoteBox`). Future home of the Shopify Storefront proxy. |
+| `public/games/` | **Side Quest Arcade** at `/games/`: shared kit, hub, vote client. Spec and setup in `public/games/README.md` (not deployed). |
 
 ## Routes
 

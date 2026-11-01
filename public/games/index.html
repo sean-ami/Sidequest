@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Side Quests · Side Quest Maidens</title>
+  <meta name="description" content="Daily side quests with the Side Quest Maidens. Play today's puzzle and vote on which Maiden opens her station next." />
+  <meta name="theme-color" content="#0B0E16" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta property="og:title" content="Side Quests · Side Quest Maidens" />
+  <meta property="og:description" content="Play today's side quest and vote on who's next." />
+  <meta property="og:image" content="https://sidequestmaidens.com/og.png" />
+  <link rel="preload" href="assets/fonts/space-grotesk.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="kit/theme.css" />
+  <link rel="stylesheet" href="hub.css" />
+</head>
+<body>
+  <div id="header"></div>
+  <main id="main" class="wrap hub">
+    <section class="hub-hero">
+      <p class="eyebrow">Side Quest Arcade</p>
+      <h1>Side Quests</h1>
+      <p class="dim">Small daily games with the Maidens. Finish a daily side quest to earn a vote on which Maiden opens her station next.</p>
+    </section>
+
+    <section id="today" class="panel today" aria-labelledby="today-h">
+      <p class="eyebrow">Today's Side Quest</p>
+      <h2 id="today-h">Loading…</h2>
+      <p class="dim" id="today-blurb"></p>
+      <p class="mono dim" id="today-reset"></p>
+      <div id="today-cta"></div>
+    </section>
+
+    <section id="vote" class="panel vote-card" aria-labelledby="vote-h">
+      <p class="eyebrow">Side Quest Vote</p>
+      <h2 id="vote-h">Who's next?</h2>
+      <div id="vote-body"><p class="dim">Loading the vote…</p></div>
+    </section>
+
+    <section aria-labelledby="games-h">
+      <h2 id="games-h" class="section-h">Games</h2>
+      <div id="games" class="game-grid"></div>
+    </section>
+
+    <section id="past" aria-labelledby="past-h" hidden>
+      <h2 id="past-h" class="section-h">Past votes</h2>
+      <div id="past-list" class="past-list"></div>
+      <p id="patreon-line" class="dim" hidden></p>
+    </section>
+
+    <section id="collection" class="panel" aria-labelledby="col-h">
+      <p class="eyebrow">Collection</p>
+      <h2 id="col-h">Your party</h2>
+      <div id="col-body"></div>
+    </section>
+  </main>
+  <footer class="wrap hub-footer">
+    <a href="/">← sidequestmaidens.com</a>
+    <a href="/shop" id="shop-link">Shop</a>
+    <a href="#" id="newsletter-link" hidden>Join the Side Quest Log</a>
+  </footer>
+  <script type="module" src="hub.js"></script>
+</body>
+</html>

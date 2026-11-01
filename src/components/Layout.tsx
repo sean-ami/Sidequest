@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useStation } from "../lib/station";
 import { Lockup } from "./GemMark";
 import { notePageView } from "../lib/track";
-import { EMAIL, go } from "../lib/paths";
+import { asset, EMAIL, go } from "../lib/paths";
 
 export function Layout() {
   const { current, audioOn, toggleAudio } = useStation();
@@ -30,6 +30,8 @@ export function Layout() {
           <NavLink to="/maidens">Maidens</NavLink>
           <NavLink to="/shop">Shop</NavLink>
           <NavLink to="/live">Live</NavLink>
+          {/* Static arcade at public/games/, outside the React router, so a plain link (full page load). */}
+          <a href={asset("/games/")}>Games</a>
           <a href={go("youtube")}>Lo-Fi ↗</a>
         </nav>
         <button className={`nav__radio ${audioOn ? "is-on" : ""}`} onClick={toggleAudio} aria-pressed={audioOn} title="Toggle station ambience">
@@ -51,6 +53,7 @@ export function Layout() {
             <Link to="/maidens">The Maidens</Link>
             <Link to="/shop">Shop</Link>
             <Link to="/live">Live shows</Link>
+            <a href={asset("/games/")}>Side Quests</a>
           </div>
           <div>
             <h4>Follow</h4>

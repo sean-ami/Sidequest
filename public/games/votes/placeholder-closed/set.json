@@ -1,0 +1,37 @@
+{
+  "set_id": "placeholder-closed",
+  "kind": "next_maiden",
+  "question": "Which Maiden should open her station next?",
+  "options": [
+    {
+      "id": "a",
+      "maiden": "placeholder-a",
+      "name": "Candidate D",
+      "station": "Test station",
+      "label": "Candidate D · Test station",
+      "preview": "preview_a.webp"
+    },
+    {
+      "id": "b",
+      "maiden": "placeholder-b",
+      "name": "Candidate E",
+      "station": "Test station",
+      "label": "Candidate E · Test station",
+      "preview": "preview_b.webp"
+    },
+    {
+      "id": "c",
+      "maiden": "placeholder-c",
+      "name": "Candidate F",
+      "station": "Test station",
+      "label": "Candidate F · Test station",
+      "preview": "preview_c.webp"
+    }
+  ],
+  "opens": "2026-10-01",
+  "closes": "2026-10-15",
+  "winner": "b",
+  "closed": "2026-10-15",
+  "video_url": null,
+  "placeholder": true
+}

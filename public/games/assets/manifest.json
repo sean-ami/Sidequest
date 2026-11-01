@@ -1,0 +1,96 @@
+{
+  "_note": "CardForge 'Copy to site' merges game assets into this file. Until then, Maidens point at the site's existing /art/ stills where they exist; anything missing renders as an accent-coloured placeholder.",
+  "maidens": [
+    {
+      "id": "briar",
+      "name": "Briar",
+      "station": "Rainfall",
+      "accent": "#8E6CFF",
+      "station_live": true,
+      "files": {
+        "scene": "/art/briar/scene.webp"
+      }
+    },
+    {
+      "id": "vega",
+      "name": "Vega",
+      "station": "Neon Signal",
+      "accent": "#FF3E8A",
+      "station_live": true,
+      "files": {
+        "scene": "/art/vega/scene.webp",
+        "card": "/art/vega/card.webp"
+      }
+    },
+    {
+      "id": "nova",
+      "name": "Nova",
+      "station": "Morning Focus",
+      "accent": "#FF9A3D",
+      "station_live": true,
+      "files": {
+        "scene": "/art/nova/scene.webp"
+      }
+    },
+    {
+      "id": "tsukiyo",
+      "name": "Tsukiyo",
+      "station": "Moonlight",
+      "accent": "#B77CFF",
+      "station_live": false,
+      "files": {
+        "card": "/art/tsukiyo/card.webp"
+      }
+    },
+    {
+      "id": "aurelia",
+      "name": "Aurelia",
+      "station": "Starfall",
+      "accent": "#FFC84A",
+      "station_live": false,
+      "files": {
+        "card": "/art/aurelia/card.webp"
+      }
+    },
+    {
+      "id": "mara",
+      "name": "Mara",
+      "station": "After Hours",
+      "accent": "#E3263A",
+      "station_live": false,
+      "files": {
+        "card": "/art/mara/card.webp"
+      }
+    },
+    {
+      "id": "mimi",
+      "name": "Mimi",
+      "station": "Rooftop Lights",
+      "accent": "#FF8FC8",
+      "station_live": false,
+      "files": {
+        "card": "/art/mimi/card.webp"
+      }
+    },
+    {
+      "id": "jackie",
+      "name": "Jackie",
+      "station": "Desert Highway",
+      "accent": "#2ED3C6",
+      "station_live": false,
+      "files": {
+        "card": "/art/jackie/card.webp"
+      }
+    },
+    {
+      "id": "tilt",
+      "name": "Tilt",
+      "station": "After Closing",
+      "accent": "#B6FF2E",
+      "station_live": false,
+      "files": {
+        "card": "/art/tilt/card.webp"
+      }
+    }
+  ]
+}

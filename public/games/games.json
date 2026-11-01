@@ -1,0 +1,44 @@
+{
+  "games": [
+    {
+      "id": "focus",
+      "name": "Morning Focus with Nova",
+      "blurb": "Pomodoro timer with Nova's station",
+      "maiden": "nova",
+      "live": false,
+      "path": "/games/focus/"
+    },
+    {
+      "id": "gem-merge",
+      "name": "Gem Merge",
+      "blurb": "Merge gems up to the Maiden's Heart",
+      "maiden": "vega",
+      "live": false,
+      "path": "/games/gem-merge/"
+    },
+    {
+      "id": "memory",
+      "name": "Maiden Memory",
+      "blurb": "Flip and match custom Maiden cards",
+      "maiden": "briar",
+      "live": false,
+      "path": "/games/memory/"
+    },
+    {
+      "id": "potion-sort",
+      "name": "Briar's Potion Sort",
+      "blurb": "Sort potions in the rainy greenhouse",
+      "maiden": "briar",
+      "live": false,
+      "path": "/games/potion-sort/"
+    },
+    {
+      "id": "nova-dash",
+      "name": "Nova's Dash",
+      "blurb": "One-button rooftop runner",
+      "maiden": "nova",
+      "live": false,
+      "path": "/games/nova-dash/"
+    }
+  ]
+}
