@@ -5,7 +5,7 @@
       "name": "Morning Focus with Nova",
       "blurb": "Pomodoro timer with Nova's station",
       "maiden": "nova",
-      "live": false,
+      "live": true,
       "path": "/games/focus/"
     },
     {

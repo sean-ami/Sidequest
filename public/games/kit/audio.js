@@ -1,6 +1,8 @@
 // Web Audio station player + tiny SFX. Nothing plays until the first user gesture.
 // Mute is persisted (sqm:audio:muted) and shared by every game.
 
+import { Ambience } from "./ambience.js";
+import { loadJSON } from "./assets.js";
 import { store } from "./store.js";
 
 const prefs = store("audio");
@@ -8,7 +10,8 @@ let ctx = null;
 let master = null;
 let musicGain = null;
 let current = null; // { src, buffer, node }
-let wanted = null; // station url requested before the gesture
+let wanted = null; // { src, music } requested before the gesture
+let ambience = null; // procedural fallback when there is no station_loop.mp3
 const buffers = new Map();
 const listeners = new Set();
 
@@ -35,7 +38,7 @@ function unlock() {
   unlocked = true;
   ensure();
   ctx?.resume?.();
-  if (wanted) playStation(wanted);
+  if (wanted) playStation(wanted.src, wanted.music);
 }
 // Arm unlock on the first real gesture only (never autoplay).
 for (const ev of ["pointerdown", "keydown", "touchend"]) {
@@ -73,45 +76,77 @@ async function load(src) {
 
 /**
  * Loop a station gaplessly (AudioBufferSourceNode.loop, no <audio> gap). Safe to call before the
- * first gesture: it starts once the player interacts. Missing files fail silently.
+ * first gesture: it starts once the player interacts. If the file is missing or fails, and `music`
+ * (the manifest's { bpm, key, mood }) is given, the procedural ambience plays instead.
+ * Accepts a Maiden record too: playStation(maiden).
  */
-export async function playStation(src) {
-  wanted = src;
-  if (!unlocked || !ensure() || !src) return;
-  if (current?.src === src) return;
+export async function playStation(src, music = null) {
+  if (src && typeof src === "object") {
+    music = src.music || null;
+    src = src.files?.station_loop || null;
+  }
+  const key = src || (music ? `ambience:${JSON.stringify(music)}` : null);
+  wanted = { src, music, key };
+  if (!unlocked || !ensure() || !key) return;
+  if (current?.key === key) return;
   stopStation();
-  try {
-    const buffer = await load(src);
-    if (wanted !== src) return;
-    const node = ctx.createBufferSource();
-    node.buffer = buffer;
-    node.loop = true;
-    const g = ctx.createGain();
-    g.gain.value = 0;
-    g.gain.setTargetAtTime(1, ctx.currentTime, 0.4);
-    node.connect(g).connect(musicGain);
-    node.start();
-    current = { src, node, g };
-  } catch {
+  const req = wanted;
+  if (src) {
+    try {
+      const buffer = await load(src);
+      if (wanted !== req) return;
+      const node = ctx.createBufferSource();
+      node.buffer = buffer;
+      node.loop = true;
+      const g = ctx.createGain();
+      g.gain.value = 0;
+      g.gain.setTargetAtTime(1, ctx.currentTime, 0.4);
+      node.connect(g).connect(musicGain);
+      node.start();
+      current = { key, node, g };
+      return;
+    } catch {
+      if (wanted !== req) return;
+    }
+  }
+  if (music) {
+    ambience ||= new Ambience(ctx, musicGain);
+    ambience.play(music);
+    current = { key, ambience: true };
+  } else {
     current = null; // no station audio yet: the game runs silent
   }
 }
 
 export function stopStation() {
   if (!current || !ctx) return;
-  const { node, g } = current;
-  g.gain.setTargetAtTime(0, ctx.currentTime, 0.2);
-  setTimeout(() => { try { node.stop(); } catch { /* already stopped */ } }, 800);
+  if (current.ambience) ambience?.stop();
+  else {
+    const { node, g } = current;
+    g.gain.setTargetAtTime(0, ctx.currentTime, 0.2);
+    setTimeout(() => { try { node.stop(); } catch { /* already stopped */ } }, 800);
+  }
   current = null;
 }
 
-/** Plays games/assets/sfx/<name>.mp3 if it exists, else a generated tone. */
+/** True once the first gesture has unlocked audio. */
+export const isUnlocked = () => unlocked;
+
+/**
+ * Plays games/assets/sfx/<name>.mp3 when the manifest lists it ("sfx": ["chime", ...]),
+ * else a generated tone. Listing files avoids probing for ones that don't exist.
+ */
 const fileSfx = new Map();
+let sfxList = null;
 export async function sfx(name, { pitch = 1, gain = 0.5 } = {}) {
   if (!unlocked || !ensure()) return;
-  const url = new URL(`../assets/sfx/${name}.mp3`, import.meta.url).href;
-  if (!fileSfx.has(url)) fileSfx.set(url, load(url).catch(() => null));
-  const buf = await fileSfx.get(url);
+  sfxList ||= loadJSON("assets/manifest.json").then((j) => new Set(j?.sfx || []));
+  let buf = null;
+  if ((await sfxList).has(name)) {
+    const url = new URL(`../assets/sfx/${name}.mp3`, import.meta.url).href;
+    if (!fileSfx.has(url)) fileSfx.set(url, load(url).catch(() => null));
+    buf = await fileSfx.get(url);
+  }
   const out = ctx.createGain();
   out.gain.value = gain;
   out.connect(master);

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Morning Focus with Nova · Side Quests</title>
+  <meta name="description" content="A Pomodoro timer with Nova and her Morning Focus station. Four focus sessions a day earns a vote on which Maiden opens her station next." />
+  <meta name="theme-color" content="#0B0E16" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta property="og:title" content="Morning Focus with Nova" />
+  <meta property="og:description" content="A Pomodoro timer with Nova's Morning Focus station." />
+  <meta property="og:image" content="https://sidequestmaidens.com/og.png" />
+  <link rel="preload" href="../assets/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../kit/theme.css" />
+  <link rel="stylesheet" href="focus.css" />
+</head>
+<body data-phase="focus" data-running="false">
+  <div id="header"></div>
+
+  <div class="stage" id="stage" aria-hidden="true">
+    <div class="stage__bg" id="bg"></div>
+    <div class="stage__tint"></div>
+    <div class="streak" id="streak"></div>
+    <div class="speedlines" id="speedlines"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="nova" id="nova" data-state="here"><div class="nova__body" id="nova-body"></div></div>
+  </div>
+
+  <main id="main" class="focus-ui wrap">
+    <section class="clock panel" aria-labelledby="phase">
+      <div class="mini-avatar" id="mini-avatar" aria-hidden="true"></div>
+      <p class="eyebrow" id="phase">Focus</p>
+      <p class="time num" id="time" role="timer" aria-live="off">25:00</p>
+      <p class="sr-only" id="announce" aria-live="polite"></p>
+      <ol class="cycle" id="cycle" aria-label="Focus sessions this cycle"></ol>
+      <div class="controls">
+        <button class="btn btn--primary btn--big" id="toggle" type="button" aria-keyshortcuts="Space">Start</button>
+        <button class="btn" id="skip" type="button" aria-keyshortcuts="S">Skip</button>
+        <button class="btn" id="reset" type="button" aria-keyshortcuts="R">Reset</button>
+        <button class="btn btn--icon" id="settings" type="button" aria-label="Timer settings">⚙</button>
+      </div>
+      <div class="break-slot" id="break-slot"></div>
+    </section>
+
+    <section class="today panel" aria-labelledby="today-h">
+      <p class="eyebrow">Today</p>
+      <h2 id="today-h"><span class="num" id="today-n">0</span> side quests completed</h2>
+      <p class="dim" id="daily-line">Finish 4 focus sessions today to earn a vote.</p>
+      <div class="daily-done" id="daily-done" hidden></div>
+      <dl class="stats">
+        <div><dt class="dim">Streak</dt><dd class="num" id="streak-n">0 days</dd></div>
+        <div><dt class="dim">All time</dt><dd class="num" id="total-n">0</dd></div>
+      </dl>
+      <div class="week" id="week" role="img" aria-label="Focus sessions over the last 7 days"></div>
+    </section>
+
+    <p class="foot dim">Full 3-hour mixes on YouTube → <a href="/go/youtube" rel="noopener">@sidequestmaidens</a></p>
+  </main>
+
+  <script type="module" src="focus.js"></script>
+</body>
+</html>

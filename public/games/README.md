@@ -55,7 +55,7 @@ The hand-off assumed Cloudflare Pages, a prebuilt bundle and D1. The repo is Rea
 |---|---|
 | `theme.css` | Tokens, font faces, `.btn`, `.panel`, `.eyebrow`, the `.card` frame with gem mark (`.card--back` for backs), the `.ph` placeholder, header, modal, toast and vote styles |
 | `assets.js` | `loadMaidens()`, `maiden(id)`, `art(m, kind, {alts, alt})` (img with a placeholder fallback), `loadJSON(rel)`, `loadConfig()` |
-| `audio.js` | `playStation(url)` (gapless `AudioBufferSourceNode` loop), `stopStation()`, `setMusicLevel(v)`, `sfx("chime"\|"pop"\|"whoosh"\|"pour"\|"thunder", {pitch})`, mute/volume |
+| `audio.js` | `playStation(maiden)` or `playStation(url, music)`: gapless `station_loop.mp3`, falling back to the procedural ambience (`ambience.js`, a port of the site's engine) from the manifest's `music` block. `stopStation()`, `setMusicLevel(v)`, `sfx("chime"\|"pop"\|"whoosh"\|"pour"\|"thunder", {pitch})` (fetches a file only if listed in `manifest.sfx`, else synthesises), mute/volume |
 | `seed.js` | `mulberry32`, `hashString`, `today()`, `dailySeed(gameId)`, `dailyRng(gameId)`, `timeUntilReset()`, `shuffle(arr, rng)` |
 | `store.js` | `store(ns).get/set/update/del` (keys `sqm:<ns>:<key>`; in-memory if storage is blocked), `recordBest`, `markDaily` (streaks) |
 | `rewards.js` | `COSMETICS`, `unlock(id)`, `isUnlocked`, `select(kind, id)`, `meet(maidenId, variant, game)` for the Collection. `codesEnabled = false` (stub) |
@@ -75,11 +75,17 @@ results({ title: "Daily complete", stats: [["Score", score]], voteSlot: vote.but
 
 Never interrupt active play with the vote panel; offer it on a results or break screen.
 
+## Games
+
+| Game | Path | Daily side quest |
+|---|---|---|
+| Morning Focus with Nova | `focus/` | 4 focus sessions in a UTC day. Timer logic in `focus/timer.js`, tested by `node tests/focus-timer.test.mjs` |
+
 ## Data files
 
 - `config.json`: `whatnot_url`, `patreon_url`, `newsletter_url`, `shop_url`. Anything driven by an empty value stays hidden. (The hub's Shop link falls back to `/shop`.)
 - `games.json`: `{ games: [{ id, name, blurb, maiden, live, path }] }`. Set `live: true` when a game ships. The vote API only accepts game ids listed here.
-- `assets/manifest.json`: `{ maidens: [{ id, name, station, accent, files: { cutout, avatar, card, card_eyes, scene, scene_bg, chibi, station_loop } }] }`. Paths are relative to `games/assets/` (CardForge output, e.g. `maidens/nova/card.webp`) or absolute (`/art/nova/scene.webp`). For now it points at the site's existing `/art/` stills; CardForge "Copy to site" merges real game assets in.
+- `assets/manifest.json`: `{ sfx: [...], maidens: [{ id, name, station, accent, station_live, focus: {x,y}, music: {bpm, key, mood}, cutout_box?: {x, bottom, h}, roof_y?, files: { cutout, avatar, card, card_eyes, scene, scene_bg, chibi, station_loop } }] }`. Full asset spec and merge rules: `docs/arcade-asset-requests.md`. Paths are relative to `games/assets/` (CardForge output, e.g. `maidens/nova/card.webp`) or absolute (`/art/nova/scene.webp`). For now it points at the site's existing `/art/` stills; CardForge "Copy to site" merges real game assets in.
 - `votes/current.json`: `{"set_id": "..."}` or `{"set_id": null}`.
 - `votes/index.json`: `{"sets": [ids, newest first]}`.
 - `votes/<set_id>/set.json`: `{ set_id, kind: "next_maiden", question, options: [{ id, maiden, name, station, label, preview }], opens, closes, winner, closed, video_url }`, plus `preview_<id>.webp` (≤ 960 px wide, watermarked).

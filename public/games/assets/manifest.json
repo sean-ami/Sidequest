@@ -1,5 +1,6 @@
 {
   "_note": "CardForge 'Copy to site' merges game assets into this file. Until then, Maidens point at the site's existing /art/ stills where they exist; anything missing renders as an accent-coloured placeholder.",
+  "sfx": [],
   "maidens": [
     {
       "id": "briar",
@@ -9,6 +10,21 @@
       "station_live": true,
       "files": {
         "scene": "/art/briar/scene.webp"
+      },
+      "music": {
+        "bpm": [
+          70,
+          80
+        ],
+        "key": {
+          "root": 50,
+          "mode": "dorian"
+        },
+        "mood": "rain"
+      },
+      "focus": {
+        "x": 0.6,
+        "y": 0.35
       }
     },
     {
@@ -20,6 +36,21 @@
       "files": {
         "scene": "/art/vega/scene.webp",
         "card": "/art/vega/card.webp"
+      },
+      "music": {
+        "bpm": [
+          85,
+          100
+        ],
+        "key": {
+          "root": 45,
+          "mode": "minor"
+        },
+        "mood": "neon"
+      },
+      "focus": {
+        "x": 0.66,
+        "y": 0.29
       }
     },
     {
@@ -30,6 +61,21 @@
       "station_live": true,
       "files": {
         "scene": "/art/nova/scene.webp"
+      },
+      "music": {
+        "bpm": [
+          80,
+          90
+        ],
+        "key": {
+          "root": 52,
+          "mode": "major"
+        },
+        "mood": "sun"
+      },
+      "focus": {
+        "x": 0.42,
+        "y": 0.42
       }
     },
     {
@@ -40,6 +86,17 @@
       "station_live": false,
       "files": {
         "card": "/art/tsukiyo/card.webp"
+      },
+      "music": {
+        "bpm": [
+          70,
+          85
+        ],
+        "key": {
+          "root": 50,
+          "mode": "pentatonic"
+        },
+        "mood": "moon"
       }
     },
     {
@@ -50,6 +107,17 @@
       "station_live": false,
       "files": {
         "card": "/art/aurelia/card.webp"
+      },
+      "music": {
+        "bpm": [
+          60,
+          70
+        ],
+        "key": {
+          "root": 48,
+          "mode": "major"
+        },
+        "mood": "stars"
       }
     },
     {
@@ -60,6 +128,17 @@
       "station_live": false,
       "files": {
         "card": "/art/mara/card.webp"
+      },
+      "music": {
+        "bpm": [
+          80,
+          90
+        ],
+        "key": {
+          "root": 46,
+          "mode": "dorian"
+        },
+        "mood": "smoke"
       }
     },
     {
@@ -70,6 +149,17 @@
       "station_live": false,
       "files": {
         "card": "/art/mimi/card.webp"
+      },
+      "music": {
+        "bpm": [
+          95,
+          110
+        ],
+        "key": {
+          "root": 53,
+          "mode": "major"
+        },
+        "mood": "city"
       }
     },
     {
@@ -80,6 +170,17 @@
       "station_live": false,
       "files": {
         "card": "/art/jackie/card.webp"
+      },
+      "music": {
+        "bpm": [
+          75,
+          85
+        ],
+        "key": {
+          "root": 45,
+          "mode": "minor"
+        },
+        "mood": "dust"
       }
     },
     {
@@ -90,6 +191,17 @@
       "station_live": false,
       "files": {
         "card": "/art/tilt/card.webp"
+      },
+      "music": {
+        "bpm": [
+          90,
+          100
+        ],
+        "key": {
+          "root": 48,
+          "mode": "pentatonic"
+        },
+        "mood": "pixel"
       }
     }
   ]
