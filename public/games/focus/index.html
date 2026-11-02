@@ -18,11 +18,16 @@
   <div id="header"></div>
 
   <div class="stage" id="stage" aria-hidden="true">
-    <div class="stage__bg" id="bg"></div>
+    <!-- The scene box is sized and cropped exactly like the background image (cover), so
+         cutout_box and roof_y from the manifest map 1:1 onto the painted scene. -->
+    <div class="scene" id="scene">
+      <div class="stage__bg" id="bg"></div>
+      <div class="streak" id="streak"></div>
+      <div class="nova" id="nova" data-state="here"><div class="nova__body" id="nova-body"></div></div>
+    </div>
+    <div class="stage__shade"></div>
     <div class="stage__tint"></div>
-    <div class="streak" id="streak"></div>
     <div class="speedlines" id="speedlines"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-    <div class="nova" id="nova" data-state="here"><div class="nova__body" id="nova-body"></div></div>
   </div>
 
   <main id="main" class="focus-ui wrap">

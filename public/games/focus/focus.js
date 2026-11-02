@@ -45,19 +45,23 @@ function paintScene() {
   // With a real cutout, use the clean plate (scene_bg) so Nova isn't drawn twice.
   const isNova = m.id === nova.id;
   const src = (isNova && m.files.cutout && m.files.scene_bg) || m.files.scene || m.files.scene_bg || m.files.card;
+  sceneAspect = 16 / 9;
   if (src) {
     const img = h("img", { src, alt: "", decoding: "async" });
     img.onerror = () => img.remove();
+    img.onload = () => { if (img.naturalWidth) { sceneAspect = img.naturalWidth / img.naturalHeight; layoutScene(); } };
     bg.append(img);
   }
   const box = m.cutout_box || {};
   const st = document.documentElement.style;
-  st.setProperty("--fx", `${Math.round((m.focus?.x ?? 0.42) * 100)}%`);
-  st.setProperty("--fy", `${Math.round((m.focus?.y ?? 0.42) * 100)}%`);
-  st.setProperty("--nx", `${Math.round((box.x ?? 0.3) * 100)}%`);
-  st.setProperty("--nb", `${Math.round((box.bottom ?? 0) * 100)}vh`);
-  st.setProperty("--nh", `${Math.round((box.h ?? 0.62) * 100)}vh`);
-  st.setProperty("--roof", `${Math.round((m.roof_y ?? 0.6) * 100)}%`);
+  const pct = (v) => `${(v * 100).toFixed(2)}%`;
+  st.setProperty("--fx", pct(m.focus?.x ?? 0.42));
+  st.setProperty("--fy", pct(m.focus?.y ?? 0.42));
+  st.setProperty("--nx", pct(box.x ?? 0.3));
+  st.setProperty("--nb", pct(box.bottom ?? 0));
+  st.setProperty("--nh", pct(box.h ?? 0.62));
+  st.setProperty("--roof", pct(m.roof_y ?? 0.6));
+  layoutScene();
   // Nova and her Dash only on her own station; other stations are moods, shown as their scene.
   $("nova").hidden = !isNova;
   const body = $("nova-body");
@@ -90,6 +94,20 @@ function paintScene() {
   }
   document.body.classList.toggle("golden", selected("timer-bg") === "timer-golden-hour" && cosmeticUnlocked("timer-golden-hour"));
 }
+
+/**
+ * Size and crop the scene box exactly like object-fit: cover with object-position = the
+ * Maiden's focal point, so everything inside it (plate, cutout, streak) shares image coordinates.
+ */
+let sceneAspect = 16 / 9;
+function layoutScene() {
+  const W = innerWidth, H = innerHeight;
+  const w = Math.max(W, H * sceneAspect);
+  const hh = w / sceneAspect;
+  const fx = station.focus?.x ?? 0.42, fy = station.focus?.y ?? 0.42;
+  Object.assign($("scene").style, { width: `${w}px`, height: `${hh}px`, left: `${(W - w) * fx}px`, top: `${(H - hh) * fy}px` });
+}
+addEventListener("resize", layoutScene);
 
 /** Nova's Dash. dir "out" = break starts (she launches right), "in" = focus resumes (she lands). */
 function dash(dir) {

@@ -6,6 +6,51 @@
 
 ---
 
+## 0. Answers to the CardForge update (2026-11-02)
+
+The retargeted export matches what the site expects. Answers to the three questions:
+
+1. **Relative `files.scene` override: yes.** Relative paths resolve against `public/games/assets/`, so `maidens/nova/scene.webp` replaces `/art/nova/scene.webp` for the games only. The main site's station page keeps its own still.
+   - When `cutout.png` **and** `scene_bg.webp` are both listed, Focus draws `scene_bg` with the cutout on top.
+   - `scene.webp` is used only as the stand-in when one of them is missing.
+2. **`h: 1.0`, `bottom: 0`: fine.**
+   - The background, cutout and gold streak now share one box that's scaled and cropped exactly like the image. Your `cutout_box` and `roof_y: 0.72` therefore map 1:1 on every screen shape.
+   - Tested with a synthetic full-height cutout at your measured box. Cutout-over-plate matched the plain scene to within 0.05% of pixels (antialiased edges only) at 390×844, 1440×900 and 1280×1024.
+   - The Dash's lean was halved so a full-height figure doesn't swing too far.
+   - The baked golden aura is fine; the charge glow builds on it.
+3. **Dash clips: yes, please.** Hand-animated beats moving a cutout in code. Spec below. Until they arrive, the code Dash runs, and it stays as the fallback (plus a fade under reduced motion).
+
+### Dash clip spec
+
+Split the one 86-frame event into **two clips**, because Focus plays them at different moments (break start, and focus resume 5–15 minutes later):
+
+| Clip | Starts | Ends | Cues |
+|---|---|---|---|
+| `dash_out` | Exactly on `scene.webp` (Nova present) | Exactly on `scene_bg.webp` (empty plate), after the sparkles settle | `whoosh_out`, sparkles |
+| `dash_in` | Exactly on `scene_bg.webp` | Exactly on `scene.webp` | `whoosh_in` |
+
+- **Composited over the plate, full frame, no alpha.** Use the same camera and frame as `scene.webp`, so the still → video → still swap is invisible. Skipping alpha avoids WebM-alpha / HEVC-alpha browser gaps.
+- **Formats:** MP4 H.264 (High, yuv420p, BT.709 tagged, `+faststart`), plus an optional WebM VP9. No audio track: the code plays the SFX from your cues.
+- **Sizes:** 1920×1080 and 960×540 (phones), 24 fps.
+- **Budget:** about 1.5 MB per 1080p clip, about 0.5 MB per 540p clip.
+- **Colour:** grade the clip to match the WebP stills. A gamma or range shift would show as a flash at the swap, so check the first and last frames against the stills.
+- **Files:** `maidens/nova/dash_out.mp4`, `dash_out_sm.mp4`, `dash_in.mp4`, `dash_in_sm.mp4` (+ `.webm` if made).
+- **Manifest:** a block on Nova, with cue times in frames relative to each clip:
+
+```json
+"dash": {
+  "fps": 24,
+  "out": { "src": "maidens/nova/dash_out.mp4", "src_sm": "maidens/nova/dash_out_sm.mp4", "cues": { "whoosh_out": 4, "sparkles": [23, 35, 47, 53] } },
+  "in":  { "src": "maidens/nova/dash_in.mp4",  "src_sm": "maidens/nova/dash_in_sm.mp4",  "cues": { "whoosh_in": 6 } }
+}
+```
+
+Wiring the clips in is a small change on the site side (play the clip in the same scene box, then swap to the still). It'll be done once the files exist.
+
+**Vega already has a manifest entry** on the site (accent `#FF3E8A`, from `src/data/maidens.ts`), so the merge keeps that.
+
+---
+
 ## 1. Path change for CardForge (do this first)
 
 The site is React + Vite on Cloudflare Workers, so static files live under **`public/`**. Change every CardForge target from `<SITE_REPO>\games\…` to:
@@ -24,7 +69,7 @@ Put these files in `public/games/assets/maidens/nova/`.
 
 | File | Spec | What it unlocks |
 |---|---|---|
-| `cutout.png` | Transparent full body, trimmed, 1024 px tall, < 600 KB, metadata stripped. **One scarf tail.** No halo or fragments. | Nova herself does the Dash |
+| `cutout.png` | Transparent full body, trimmed, ≤ 1024 px tall, < 600 KB, metadata stripped. **One scarf tail.** No halo or fragments. | Nova herself does the Dash |
 | `scene_bg.webp` | 1920×1080, the **same frame** as `scene.webp` with Nova removed (inpainted). If it can't be inpainted cleanly, send neither this nor the cutout (see the note below) | The clean background behind her |
 | `avatar.png` | 512×512 head and shoulders, transparent | Mini timer mode |
 | `card.webp` | 750×1050 portrait card crop, < 250 KB | Share cards ("4 side quests done today") |
@@ -43,7 +88,7 @@ The cutout needs to land where she stands in the scene. Measure against `scene.w
 
 - `x`: horizontal centre of her figure ÷ image width.
 - `bottom`: gap under her feet ÷ image height (0 if she's cut off at the bottom).
-- `h`: her height ÷ image height.
+- `h`: her height ÷ image height (1.0 is fine for a full-height figure).
 - `roof_y`: height of the rooftop line ÷ image height, where the gold streak runs. Optional (default 0.60).
 
 ---
