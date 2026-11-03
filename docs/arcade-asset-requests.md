@@ -40,12 +40,25 @@ Split the one 86-frame event into **two clips**, because Focus plays them at dif
 ```json
 "dash": {
   "fps": 24,
-  "out": { "src": "maidens/nova/dash_out.mp4", "src_sm": "maidens/nova/dash_out_sm.mp4", "cues": { "whoosh_out": 4, "sparkles": [23, 35, 47, 53] } },
-  "in":  { "src": "maidens/nova/dash_in.mp4",  "src_sm": "maidens/nova/dash_in_sm.mp4",  "cues": { "whoosh_in": 6 } }
+  "out": { "src": "maidens/nova/dash_out.mp4", "src_sm": "maidens/nova/dash_out_sm.mp4",
+           "webm": "maidens/nova/dash_out.webm", "webm_sm": "maidens/nova/dash_out_sm.webm",
+           "cues": { "whoosh_out": 5, "sparkles": [24, 36, 48, 54] } },
+  "in":  { "src": "maidens/nova/dash_in.mp4",  "src_sm": "maidens/nova/dash_in_sm.mp4",
+           "webm": "maidens/nova/dash_in.webm", "webm_sm": "maidens/nova/dash_in_sm.webm",
+           "cues": { "whoosh_in": 4 } }
 }
 ```
 
-Wiring the clips in is a small change on the site side (play the clip in the same scene box, then swap to the still). It'll be done once the files exist.
+**Site side: done (2026-11-03).** Focus plays the clips in the same scene box as the stills, exactly as CardForge built them (the cue frames and `webm` / `webm_sm` keys above):
+
+- **Loading:** the clips download on the first Start, not on page load. Phones and small screens get the 540p files. Browsers that can play WebM VP9 get WebM; the rest get the MP4.
+- **Swap:** at a break, the clip's first frame covers the cutout, then plays to the empty plate. When focus resumes, `dash_in` plays from the plate and hands back to the cutout on the still.
+- **Sound:** whoosh and sparkle sounds are triggered at the cue frames.
+- **Fallbacks:** the code Dash runs if a clip is missing, fails, or the tab is hidden. Reduced motion uses a fade and never downloads the clips.
+- **Tested** with synthetic clips built to this contract. Clip frame 0 matched the composited stills within about 1 of 255 on average (compression loss only).
+- **Not yet checked:** CardForge's real files in a real browser. Do that once they're committed.
+
+**Re-render rule:** the clips only match the stills they were rendered from. If Nova's station set (scene, plate, cutout) is ever regenerated, re-run `game_dash.py` and copy clips and stills together.
 
 **Vega already has a manifest entry** on the site (accent `#FF3E8A`, from `src/data/maidens.ts`), so the merge keeps that.
 

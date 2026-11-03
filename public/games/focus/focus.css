@@ -53,6 +53,9 @@ body.crop[data-phase="short"] .stage__bg img, body.crop[data-phase="long"] .stag
 @keyframes fade-out { to { opacity: 0; } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
+.dash-clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; opacity: 0; pointer-events: none; }
+.dash-clip.on { opacity: 1; }
+
 .speedlines { position: absolute; inset: 0; pointer-events: none; opacity: 0; }
 .speedlines.on { animation: lines-fade 0.9s ease-out both; }
 .speedlines i { position: absolute; left: -40%; height: 2px; width: 40%; border-radius: 2px; background: linear-gradient(90deg, transparent, rgb(255 236 200 / 0.9)); }
@@ -110,7 +113,7 @@ body[data-running="false"] .time { opacity: 0.85; }
 
 /* ---------- Mini mode: small window, time + avatar only ---------- */
 @media (max-height: 340px), (max-width: 320px) {
-  .sq-header, .today, .foot, .controls, .cycle, .break-slot, .stage .nova, .stage .speedlines, .stage .streak, #phase { display: none !important; }
+  .sq-header, .today, .foot, .controls, .cycle, .break-slot, .stage .nova, .stage .speedlines, .stage .streak, .dash-clip, #phase { display: none !important; }
   .focus-ui { min-height: 100vh; padding: 8px; grid-template-columns: 1fr; align-content: center; }
   .clock { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px; }
   .time { font-size: clamp(2.5rem, 22vw, 5rem); margin: 0; }

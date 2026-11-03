@@ -24,6 +24,10 @@
       <div class="stage__bg" id="bg"></div>
       <div class="streak" id="streak"></div>
       <div class="nova" id="nova" data-state="here"><div class="nova__body" id="nova-body"></div></div>
+      <!-- Hand-animated Dash clips (manifest "dash"): full-frame, composited over the plate, same
+           frame as scene.webp, so the still -> clip -> still swap is invisible. -->
+      <video class="dash-clip" id="clip-out" muted playsinline preload="none" disablepictureinpicture></video>
+      <video class="dash-clip" id="clip-in" muted playsinline preload="none" disablepictureinpicture></video>
     </div>
     <div class="stage__shade"></div>
     <div class="stage__tint"></div>

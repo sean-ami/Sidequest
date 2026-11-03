@@ -64,6 +64,13 @@ function paintScene() {
   layoutScene();
   // Nova and her Dash only on her own station; other stations are moods, shown as their scene.
   $("nova").hidden = !isNova;
+  for (const dir of ["out", "in"]) {
+    const v = $(`clip-${dir}`);
+    v.classList.remove("on");
+    v.removeAttribute("data-loaded");
+    v.replaceChildren();
+    clipsReady[dir] = false;
+  }
   const body = $("nova-body");
   body.replaceChildren();
   const nv = $("nova");
@@ -109,10 +116,81 @@ function layoutScene() {
 }
 addEventListener("resize", layoutScene);
 
+// ---------- Dash clips ----------
+// The clips only match the game's own stills, so they're used only with the full cutout set.
+const clipsReady = { out: false, in: false };
+const hasClips = () => {
+  const m = station;
+  return m.id === nova.id && !!(m.dash?.out && m.dash?.in && m.files.cutout && m.files.scene_bg);
+};
+const dashUrl = (p) => (p ? new URL(p, new URL("../assets/", import.meta.url)).href : null);
+
+/** Loads both clips (called on the first Start, so page load stays light). Smaller files on small screens. */
+function loadClips() {
+  if (!hasClips() || reduced()) return;
+  const small = Math.max(innerWidth, innerHeight) * (devicePixelRatio || 1) <= 1100;
+  for (const dir of ["out", "in"]) {
+    const v = $(`clip-${dir}`);
+    if (v.dataset.loaded) continue;
+    const c = station.dash[dir];
+    const sources = [
+      [small ? c.webm_sm || c.webm : c.webm, 'video/webm; codecs="vp9"'],
+      [small ? c.src_sm || c.src : c.src, 'video/mp4; codecs="avc1.640028"'],
+    ].filter(([u, type]) => u && v.canPlayType(type));
+    if (!sources.length) continue;
+    v.replaceChildren(...sources.map(([u, type]) => h("source", { src: dashUrl(u), type })));
+    v.preload = "auto";
+    v.dataset.loaded = "1";
+    v.addEventListener("canplaythrough", () => (clipsReady[dir] = true), { once: true });
+    v.addEventListener("error", () => (clipsReady[dir] = false), true);
+    v.load();
+  }
+}
+
+/** Plays a clip over the scene box. Resolves false (so the code Dash runs) if it can't. */
+function playClip(dir) {
+  const v = $(`clip-${dir}`);
+  const el = $("nova");
+  if (!hasClips() || reduced() || document.hidden || !clipsReady[dir]) return Promise.resolve(false);
+  const c = station.dash[dir];
+  const fps = station.dash.fps || 24;
+  return new Promise((resolve) => {
+    let done = false;
+    const timers = [];
+    el.classList.add("clip"); // holds Nova's state while the clip owns the screen
+    const finish = () => {
+      if (done) return;
+      done = true;
+      timers.forEach(clearTimeout);
+      el.classList.remove("clip");
+      el.dataset.state = dir === "out" ? "away" : "here";
+      v.classList.remove("on");
+      v.pause();
+      resolve(true);
+    };
+    v.currentTime = 0;
+    v.play().then(() => {
+      // First frame equals the still: swap under it, then hand the screen to the clip.
+      v.classList.add("on");
+      el.dataset.state = "away";
+      const at = (frame, fn) => timers.push(setTimeout(fn, (frame / fps) * 1000));
+      const cues = c.cues || {};
+      if (cues.whoosh_out != null) at(cues.whoosh_out, () => sfx("whoosh", { gain: 0.35 }));
+      if (cues.whoosh_in != null) at(cues.whoosh_in, () => sfx("whoosh", { gain: 0.3, pitch: 1.2 }));
+      for (const f of [].concat(cues.sparkles || [])) at(f, () => sfx("chime", { pitch: 2, gain: 0.12 }));
+      v.addEventListener("ended", finish, { once: true });
+      // Safety net if "ended" never fires (backgrounded tab, stalled decode).
+      const len = Number.isFinite(v.duration) && v.duration > 0 ? v.duration : 6;
+      timers.push(setTimeout(finish, len * 1000 + 1500));
+    }).catch(() => { done = true; el.classList.remove("clip"); resolve(false); });
+  });
+}
+
 /** Nova's Dash. dir "out" = break starts (she launches right), "in" = focus resumes (she lands). */
-function dash(dir) {
+async function dash(dir) {
   const el = $("nova");
   if (el.hidden) return;
+  if (await playClip(dir)) return;
   el.classList.remove("charge", "dash-out", "dash-in", "fade-out", "fade-in");
   void el.offsetWidth; // restart animations
   if (dir === "out") {
@@ -233,7 +311,7 @@ function render() {
   tg.setAttribute("aria-pressed", String(state.running));
   // Nova is away for the whole break (also after a reload mid-break).
   const n = $("nova");
-  if (!["charge", "dash-out", "dash-in", "fade-out", "fade-in"].some((c) => n.classList.contains(c))) n.dataset.state = state.phase === "focus" ? "here" : "away";
+  if (!["charge", "dash-out", "dash-in", "fade-out", "fade-in", "clip"].some((c) => n.classList.contains(c))) n.dataset.state = state.phase === "focus" ? "here" : "away";
   setMusicLevel(musicLevel());
   renderCycle();
 }
@@ -317,6 +395,7 @@ function toggle() {
   if (state.running) setState(T.pause(state, Date.now()));
   else {
     playStation(station);
+    loadClips();
     setState(T.start(state, Date.now()));
   }
 }
@@ -390,6 +469,7 @@ function showSettings() {
     }
     select("timer-bg", f.get("bg") || null);
     paintScene();
+    if (state.running) loadClips();
     render();
     m.close();
   });
@@ -410,6 +490,7 @@ function showHelp() {
 
 // ---------- Boot ----------
 paintScene();
+if (state.running) loadClips();
 tick();
 renderProgress();
 setInterval(() => { tick(); renderProgress(); }, 250);
