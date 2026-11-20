@@ -1,5 +1,5 @@
-// Fake "beatbox" sounds with known timings, for tests. Rough stand-ins for a mouth:
-// kick = low thump + breath, snare = mid-band noise burst, hat = short hiss.
+// Synthetic "beatbox" sounds with known timings: the demo groove, and test input.
+// Rough stand-ins for a mouth: kick = low thump + breath, snare = mid-band noise burst, hat = short hiss.
 
 function rng(seed) {
   let s = seed >>> 0;

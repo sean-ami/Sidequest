@@ -2,8 +2,9 @@ import { detectOnsets, extractFeatures, FEATURE_VERSION } from './dsp.js';
 import { Classifier, CLASSES, looAccuracy } from './classify.js';
 import { buildPattern, countHits } from './pattern.js';
 import { playDrum, click } from './drums.js';
-import { renderWav, buildMidi } from './exporters.js';
+import { renderWav, buildMidi, makeZip } from './exporters.js';
 import { Mic } from './audio-io.js';
+import { renderVoice, GROOVE } from './synth-voice.js';
 
 const $ = (s) => document.querySelector(s);
 const COLORS = { kick: '#ff3e8a', snare: '#3dd6c8', hat: '#ffc857' };
@@ -39,7 +40,7 @@ function saveSamples() {
 }
 
 // ---------- audio setup ----------
-async function ensureAudio() {
+async function ensureCtx() {
   if (!state.ctx) {
     const AC = window.AudioContext || window.webkitAudioContext;
     state.ctx = new AC({ latencyHint: 'interactive' });
@@ -47,6 +48,10 @@ async function ensureAudio() {
     state.player = new LoopPlayer(state.ctx);
   }
   await state.ctx.resume();
+}
+
+async function ensureAudio() {
+  await ensureCtx();
   await state.mic.open();
   hideAlert();
 }
@@ -57,9 +62,13 @@ function micError(e) {
   if (name === 'NotAllowedError' || name === 'SecurityError') msg = 'Microphone access was blocked. Allow it in your browser’s site settings, then try again.';
   else if (name === 'NotFoundError') msg = 'No microphone found. Plug one in or check your input device.';
   else if (name === 'InsecureContext') msg = 'Microphone access needs a secure page (https or localhost).';
+  if (inClaude) msg = 'The mic isn’t available inside the Claude app. Try “Hear a demo groove”, or open the app in a regular browser to record.';
   showAlert(msg);
   console.error(e);
 }
+
+// Inside the Claude app the page can't use the mic and may only save certain file types.
+const inClaude = typeof window.claude?.use === 'function';
 function showAlert(msg) { const a = $('#alert'); a.textContent = msg; a.hidden = false; }
 function hideAlert() { $('#alert').hidden = true; }
 
@@ -226,7 +235,32 @@ async function record() {
   state.busy = false;
   setBusyUI(false);
 
-  state.rec = { ...rec, bpm, bars, loopStartRec: loopStart - rec.startTime, autoLatency: latencyEstimate() };
+  showResult({ ...rec, bpm, bars, loopStartRec: loopStart - rec.startTime, autoLatency: latencyEstimate() });
+}
+
+/** A built-in boom-bap, beatboxed by a (synthetic) mouth with human timing, through the same pipeline. */
+async function demo() {
+  if (state.busy) return;
+  await ensureCtx();
+  state.player.stop();
+  const { bpm, bars } = state;
+  const sr = state.ctx.sampleRate, spb = 60 / bpm, sd = spb / 4;
+  const loopStartRec = 0.3 + 4 * spb;
+  const hits = [];
+  for (let b = 0; b < bars; b++) {
+    for (const [s, type] of GROOVE) {
+      const sloppy = 0.022 * Math.sin(s * 5.3 + b * 2.1); // up to ±22 ms off the grid
+      hits.push({ type, time: loopStartRec + (b * 16 + s) * sd + sloppy, gain: 0.45 + 0.2 * Math.abs(Math.sin(s + b)) });
+    }
+  }
+  const data = renderVoice(hits, loopStartRec + bars * 4 * spb + 0.4, sr, { seed: Date.now() % 1000 });
+  $('#stageLabel').textContent = 'Demo groove loaded';
+  $('#bigCount').textContent = '♪';
+  showResult({ data, sr, startTime: 0, bpm, bars, loopStartRec, autoLatency: 0, demo: true });
+}
+
+function showResult(rec) {
+  state.rec = rec;
   analyze();
   const res = $('#result');
   res.hidden = false;
@@ -238,7 +272,7 @@ async function record() {
 }
 
 function setBusyUI(busy) {
-  document.querySelectorAll('.pad, #recBtn, #resetTeach, #playBtn, #wavBtn, #midiBtn').forEach((b) => (b.disabled = busy));
+  document.querySelectorAll('.pad, #recBtn, #demoBtn, #resetTeach, #playBtn, #wavBtn, #midiBtn, #zipBtn').forEach((b) => (b.disabled = busy));
 }
 
 // ---------- step 3: analyze + show ----------
@@ -274,7 +308,9 @@ function drawSummary() {
   const { pattern } = state.analysis;
   const n = countHits(pattern);
   const total = n.kick + n.snare + n.hat;
-  const model = state.classifier.ready ? 'using your trained sounds' : 'using built-in guesses (train step 1 for better results)';
+  const model = state.rec.demo
+    ? 'from the demo groove. Switch to “Both” to hear the sloppy mouth version against the clean beat'
+    : state.classifier.ready ? 'using your trained sounds' : 'using built-in guesses (train step 1 for better results)';
   $('#summary').textContent = total
     ? `${n.kick} kicks · ${n.snare} snares · ${n.hat} hats at ${state.rec.bpm} BPM, ${model}.`
     : 'Didn’t catch any hits in the loop. Get closer to the mic, or raise the sensitivity below.';
@@ -461,6 +497,29 @@ function exportMidi() {
   download(new Blob([bytes], { type: 'audio/midi' }), `beatbox-beat-${state.rec.bpm}bpm.mid`);
 }
 
+/** Claude app: WAV + MIDI in one .zip, offered through the viewer's save prompt. */
+async function exportZip() {
+  const btn = $('#zipBtn');
+  btn.disabled = true;
+  btn.textContent = 'Rendering…';
+  try {
+    const name = `beatbox-beat-${state.rec.bpm}bpm`;
+    const repeats = Math.max(1, Math.round(8 / state.rec.bars));
+    const wav = new Uint8Array(await (await renderWav(state.analysis.pattern, state.rec.bpm, { repeats })).arrayBuffer());
+    const mid = buildMidi(state.analysis.pattern, state.rec.bpm);
+    const zip = makeZip([{ name: `${name}.wav`, bytes: wav }, { name: `${name}.mid`, bytes: mid }]);
+    await state.downloads.save({ filename: `${name}.zip`, data: new Blob([zip]) });
+  } catch (e) {
+    if (e?.code === 'declined') return;
+    if (e?.code === 'rate_limited') showAlert('A save prompt is already open. Finish that one first.');
+    else showAlert('Saving isn’t available in this view. Open the app in a browser to export.');
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⬇ WAV + MIDI (.zip)';
+  }
+}
+
 // ---------- wiring ----------
 function seg(el, onPick) {
   el.addEventListener('click', (e) => {
@@ -517,6 +576,19 @@ $('#offset').addEventListener('input', (e) => {
   reanalyzeSoon();
 });
 window.addEventListener('resize', () => state.analysis && drawWave());
+
+$('#demoBtn').addEventListener('click', demo);
+$('#zipBtn').addEventListener('click', exportZip);
+
+if (inClaude) {
+  $('#micNote').hidden = false;
+  $('#wavBtn').hidden = true;
+  $('#midiBtn').hidden = true;
+  window.claude.use('downloads').then((d) => {
+    state.downloads = d;
+    $('#zipBtn').hidden = !d;
+  });
+}
 
 $('#sensVal').textContent = '60%';
 $('#offVal').textContent = '0 ms';

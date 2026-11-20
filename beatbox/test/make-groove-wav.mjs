@@ -1,7 +1,7 @@
 // Writes a synthetic beatbox groove as a 16-bit WAV, used as a fake microphone in the browser test.
 // Usage: node test/make-groove-wav.mjs out.wav [bpm]
 import { writeFileSync } from 'node:fs';
-import { renderVoice, GROOVE } from './synth-voice.mjs';
+import { renderVoice, GROOVE } from '../js/synth-voice.js';
 
 const out = process.argv[2] || 'groove.wav';
 const bpm = Number(process.argv[3] || 90);

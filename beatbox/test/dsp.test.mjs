@@ -4,7 +4,7 @@ import { detectOnsets, extractFeatures, fft } from '../js/dsp.js';
 import { Classifier, heuristic, looAccuracy, CLASSES } from '../js/classify.js';
 import { buildPattern } from '../js/pattern.js';
 import { buildMidi } from '../js/exporters.js';
-import { renderVoice, GROOVE } from './synth-voice.mjs';
+import { renderVoice, GROOVE } from '../js/synth-voice.js';
 
 const SR = 48000;
 
@@ -90,4 +90,18 @@ test('MIDI file is well formed', () => {
   assert.deepEqual([...m.slice(-3)], [0xff, 0x2f, 0x00]);
   const noteOns = [...m].filter((b, i) => b === 0x99 && i > 22).length;
   assert.equal(noteOns, GROOVE.length);
+});
+
+test('zip holds both files intact', async () => {
+  const { makeZip } = await import('../js/exporters.js');
+  const { writeFileSync, mkdtempSync } = await import('node:fs');
+  const { execFileSync } = await import('node:child_process');
+  const { join } = await import('node:path');
+  const { tmpdir } = await import('node:os');
+  const a = new Uint8Array(5000).map((_, i) => i * 7);
+  const zip = makeZip([{ name: 'beat.wav', bytes: a }, { name: 'beat.mid', bytes: new Uint8Array([1, 2, 3]) }]);
+  const dir = mkdtempSync(join(tmpdir(), 'bbzip-'));
+  writeFileSync(join(dir, 'x.zip'), zip);
+  const out = execFileSync('unzip', ['-t', join(dir, 'x.zip')]).toString();
+  assert.match(out, /No errors detected/);
 });

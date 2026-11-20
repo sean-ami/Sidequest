@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Beatbox to Beats</title>
+  <meta name="claude:viewport-fit-sides" content="cover" />
   <meta name="description" content="Beatbox into your mic and get a real drum loop back. Runs entirely in your browser." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -88,6 +89,8 @@
       </div>
 
       <button class="btn rec" id="recBtn" type="button"><span class="rec-dot"></span>Record</button>
+      <button class="btn ghost demo" id="demoBtn" type="button">No mic? Hear a demo groove</button>
+      <p class="mic-note" id="micNote" hidden>The mic isn’t available inside the Claude app. The demo runs the same detection, labelling and quantizing on a built-in beatbox take. To record yourself, open this app in a regular browser.</p>
     </section>
 
     <section class="card" id="result" aria-labelledby="resTitle" hidden>
@@ -115,6 +118,7 @@
       <div class="exports">
         <button class="btn ghost" id="wavBtn" type="button">⬇ WAV</button>
         <button class="btn ghost" id="midiBtn" type="button">⬇ MIDI</button>
+        <button class="btn ghost" id="zipBtn" type="button" hidden>⬇ WAV + MIDI (.zip)</button>
       </div>
 
       <details class="tune">

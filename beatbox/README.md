@@ -40,3 +40,18 @@ Training samples are kept in `localStorage` per browser. A missing or blocked st
 - More kits: `KITS` in `js/drums.js` is plain parameters. Add an acoustic or lo-fi entry plus a picker, or load real one-shot samples.
 - Free-tempo mode: detect the BPM from the recording instead of a count-in.
 - More sounds: open hat, rimshot, toms. Add a pad, a class in `CLASSES`, a synth voice and a GM note.
+
+## Single-file build
+
+`node beatbox/scripts/build-single.mjs out.html` inlines the CSS and every module into one page (used for the Claude artifact). Inside the Claude app the page can't use the mic, so it offers the demo groove instead, and it exports WAV + MIDI together as a `.zip` through the viewer's save prompt.
+
+## Open it on your phone over Tailscale
+
+Phones only allow the mic on `https` (or `localhost`), so a plain `http://100.x.y.z:8765` link will load the page but can't record. On the computer running the server:
+
+```bash
+cd beatbox && python3 -m http.server 8765
+tailscale serve --bg 8765        # serves https://<machine>.<tailnet>.ts.net with a real certificate
+```
+
+Then open that `https://….ts.net` address on your phone with Tailscale connected. (`tailscale serve --bg off` stops it.)
