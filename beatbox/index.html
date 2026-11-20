@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beatbox to Beats</title>
+  <meta name="description" content="Beatbox into your mic and get a real drum loop back. Runs entirely in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <p class="eyebrow">Side Quest Maidens · Lab</p>
+      <h1>Beatbox <span class="arrow">→</span> Beats</h1>
+      <p class="lede">Beatbox into your mic and get a real drum loop back. Everything stays on your device.</p>
+    </header>
+
+    <p class="alert" id="alert" role="alert" hidden></p>
+
+    <section class="card" id="teach" aria-labelledby="teachTitle">
+      <div class="card-head">
+        <span class="num">1</span>
+        <div>
+          <h2 id="teachTitle">Teach it your sounds</h2>
+          <p>Optional, but much more accurate. Tap a pad, then make that sound <b>4–6 times</b> in a row.</p>
+        </div>
+      </div>
+      <div class="pads">
+        <button class="pad" data-class="kick" type="button">
+          <span class="dot"></span><strong>Kick</strong><em>“b” · “boom”</em>
+          <span class="count">not trained</span><span class="bar"><i></i></span>
+        </button>
+        <button class="pad" data-class="snare" type="button">
+          <span class="dot"></span><strong>Snare</strong><em>“k” · “psh”</em>
+          <span class="count">not trained</span><span class="bar"><i></i></span>
+        </button>
+        <button class="pad" data-class="hat" type="button">
+          <span class="dot"></span><strong>Hi-hat</strong><em>“ts” · “t”</em>
+          <span class="count">not trained</span><span class="bar"><i></i></span>
+        </button>
+      </div>
+      <div class="row between">
+        <p class="status" id="teachStatus">Not trained yet. Built-in guesses are in use.</p>
+        <button class="link" id="resetTeach" type="button" hidden>Reset</button>
+      </div>
+    </section>
+
+    <section class="card" id="record" aria-labelledby="recTitle">
+      <div class="card-head">
+        <span class="num">2</span>
+        <div>
+          <h2 id="recTitle">Record a loop</h2>
+          <p>You get a 4-click count-in, then beatbox along with the pulse.</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <label class="field">
+          <span>Tempo</span>
+          <span class="bpm"><input id="bpmRange" type="range" min="60" max="160" value="90" aria-label="Tempo slider" /><input id="bpm" type="number" min="60" max="160" value="90" inputmode="numeric" aria-label="Tempo in BPM" /><small>BPM</small></span>
+        </label>
+        <div class="field">
+          <span>Length</span>
+          <div class="seg" id="bars" role="radiogroup" aria-label="Loop length">
+            <button type="button" role="radio" data-v="1" aria-checked="false">1 bar</button>
+            <button type="button" role="radio" data-v="2" aria-checked="true">2 bars</button>
+            <button type="button" role="radio" data-v="4" aria-checked="false">4 bars</button>
+          </div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="clickDuring" />
+          <span class="sw"></span>
+          <span>Click while recording <small>(wear headphones, or the click gets recorded too)</small></span>
+        </label>
+      </div>
+
+      <div class="stage" id="stage">
+        <div class="stage-top">
+          <span class="stage-label" id="stageLabel">Ready when you are</span>
+          <span class="meter" aria-hidden="true"><i id="meter"></i></span>
+        </div>
+        <div class="big-count" id="bigCount">●</div>
+        <div class="beat-dots" id="beatDots"></div>
+        <div class="progress"><i id="recProgress"></i></div>
+      </div>
+
+      <button class="btn rec" id="recBtn" type="button"><span class="rec-dot"></span>Record</button>
+    </section>
+
+    <section class="card" id="result" aria-labelledby="resTitle" hidden>
+      <div class="card-head">
+        <span class="num">3</span>
+        <div>
+          <h2 id="resTitle">Your beat</h2>
+          <p id="summary"></p>
+        </div>
+      </div>
+
+      <canvas id="wave" aria-label="Your recording with each detected hit marked"></canvas>
+      <div class="legend"><span class="k">Kick</span><span class="s">Snare</span><span class="h">Hi-hat</span></div>
+      <div class="grid" id="grid"></div>
+
+      <div class="transport">
+        <button class="btn play" id="playBtn" type="button">▶ Play</button>
+        <div class="seg" id="listen" role="radiogroup" aria-label="What to hear">
+          <button type="button" role="radio" data-v="beat" aria-checked="true">Beat</button>
+          <button type="button" role="radio" data-v="voice" aria-checked="false">Voice</button>
+          <button type="button" role="radio" data-v="both" aria-checked="false">Both</button>
+        </div>
+      </div>
+
+      <div class="exports">
+        <button class="btn ghost" id="wavBtn" type="button">⬇ WAV</button>
+        <button class="btn ghost" id="midiBtn" type="button">⬇ MIDI</button>
+      </div>
+
+      <details class="tune">
+        <summary>Fine-tune detection</summary>
+        <label class="field">
+          <span>Sensitivity <small id="sensVal"></small></span>
+          <input id="sens" type="range" min="0.1" max="0.95" step="0.05" value="0.6" />
+          <small class="hint">Raise it if soft hits are missed. Lower it if breaths or clicks show up as drums.</small>
+        </label>
+        <label class="field">
+          <span>Timing offset <small id="offVal"></small></span>
+          <input id="offset" type="range" min="-120" max="120" step="5" value="0" />
+          <small class="hint">If everything lands one step late, slide it right. If early, slide it left.</small>
+        </label>
+      </details>
+    </section>
+
+    <footer class="foot">
+      Kick, snare and hat for now. Editing the grid and more drum kits come next.
+    </footer>
+  </main>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
